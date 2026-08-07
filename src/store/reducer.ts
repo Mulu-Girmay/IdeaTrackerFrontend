@@ -15,11 +15,8 @@ export function createReducerManager(
   initialReducers: Record<string, Reducer>,
 ): ReducerManager {
   const reducers = { ...initialReducers };
-
   let combinedReducer = combineReducers(reducers);
-
   let keysToRemove: string[] = [];
-
   return {
     getReducerMap: () => reducers,
 

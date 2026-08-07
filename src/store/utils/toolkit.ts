@@ -1,11 +1,5 @@
-// src/store/utils/toolkit.ts
 import { createSlice } from "@reduxjs/toolkit";
 import type { CreateSliceOptions, Slice } from "@reduxjs/toolkit";
-
-/**
- * Typed wrapper around redux-toolkit's createSlice
- * Provides better type inference for the state
- */
 export function createTypedSlice<
   State,
   CaseReducers extends import("@reduxjs/toolkit").SliceCaseReducers<State>,

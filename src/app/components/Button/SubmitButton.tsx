@@ -37,6 +37,7 @@ export interface SubmitButtonProps extends Omit<
   color?: "primary" | "secondary" | "success" | "error" | "warning" | "info";
   onClick?: () => void | Promise<void>;
   children?: React.ReactNode;
+  type?: "submit";
 }
 
 const StyledButton = styled(Button, {

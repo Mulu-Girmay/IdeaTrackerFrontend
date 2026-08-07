@@ -64,7 +64,7 @@ const RegisterForm = () => {
         p: 2,
       }}
     >
-      <Paper sx={{ p: 4, maxWidth: 400, width: "100%" }}>
+      <Paper sx={{ p: 4, width: "100%" }}>
         <Typography variant="h5" gutterBottom align="center">
           Register
         </Typography>
@@ -137,6 +137,7 @@ const RegisterForm = () => {
             fullWidth
             size="large"
             isLoading={isLoading}
+            type="submit"
             disabled={!formik.isValid || !formik.dirty || isLoading}
             sx={{ mt: 2 }}
           >

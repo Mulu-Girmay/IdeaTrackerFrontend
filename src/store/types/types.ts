@@ -1,4 +1,3 @@
-// src/store/types/types.ts
 import { Reducer, Store } from "@reduxjs/toolkit";
 import { Saga } from "redux-saga";
 import { RootState } from "./RootState";

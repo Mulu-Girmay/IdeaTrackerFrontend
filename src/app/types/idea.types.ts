@@ -59,4 +59,3 @@ export interface IdeaState {
     total: number;
     limit: number;
   };
-}

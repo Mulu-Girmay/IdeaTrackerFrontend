@@ -1,6 +1,6 @@
-import { Reducer, Store } from "@reduxjs/toolkit";
-import { Saga } from "redux-saga";
-import { RootState } from "./RootState";
+import type { Reducer, Store } from "@reduxjs/toolkit";
+import type { Saga } from "redux-saga";
+import type { RootState } from "./RootState";
 
 export interface InjectedReducer {
   key: keyof RootState;

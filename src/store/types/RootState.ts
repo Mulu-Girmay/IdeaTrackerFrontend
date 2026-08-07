@@ -1,11 +1,9 @@
-// src/store/types/RootState.ts
-import { AuthState } from "../../types/auth.types";
-import { IdeaState } from "../../types/idea.types";
-import { UserState } from "../../types/user.types";
+import type { AuthState } from "../../app/types/auth.types";
+import type { IdeaState } from "../../app/types/idea.types";
+import type { UserStats as UserState } from "../../app/types/user.types";
 
 export interface RootState {
   auth: AuthState;
   ideas: IdeaState;
   users: UserState;
-  // Add other state slices as needed
 }

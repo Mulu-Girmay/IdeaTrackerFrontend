@@ -1,10 +1,11 @@
 // src/store/reducers.ts
-import { combineReducers, Reducer, AnyAction } from "@reduxjs/toolkit";
-import { ReducerManager } from "./types/types";
-import { RootState } from "./types/RootState";
+import { combineReducers } from "@reduxjs/toolkit";
+import type { Reducer, UnknownAction } from "@reduxjs/toolkit";
+import type { ReducerManager } from "./types/types";
+import type { RootState } from "./types/RootState";
 
-import authReducer from "./slices/authSlice";
-import { authSliceName } from "./slices/authSlice";
+import authReducer from "../app/pages/authPage/slice";
+import { authSliceName } from "../app/pages/authPage/slice";
 
 const initialReducers: Record<string, Reducer> = {
   [authSliceName]: authReducer,
@@ -22,11 +23,11 @@ export function createReducerManager(
   return {
     getReducerMap: () => reducers,
 
-    reduce: (state: RootState, action: AnyAction) => {
+    reduce: (state: RootState, action: UnknownAction) => {
       if (keysToRemove.length > 0) {
         state = { ...state };
         for (const key of keysToRemove) {
-          delete state[key];
+          delete (state as any)[key];
         }
         keysToRemove = [];
       }

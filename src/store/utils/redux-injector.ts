@@ -1,21 +1,18 @@
 // src/store/utils/redux-injectors.ts
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { Saga } from "redux-saga";
-import { Reducer } from "@reduxjs/toolkit";
-import { RootState } from "../types/RootState";
-import { StoreWithReducerManager } from "../types/types";
+import type { Saga } from "redux-saga";
+import type { Reducer } from "@reduxjs/toolkit";
+import type { RootState } from "../types/RootState";
+import type { StoreWithReducerManager } from "../types/types";
 import { useInjectReducer as useInjectReducerBase } from "redux-injectors";
 import { useInjectSaga as useInjectSagaBase } from "redux-injectors";
-import { compose } from "redux";
+import type { AppDispatch } from "../configureStore";
 
 // Typed hooks for the store
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector = <T>(selector: (state: RootState) => T) =>
   useSelector<RootState, T>(selector);
 export const useAppStore = () => useStore<RootState>();
-
-// Need to declare these types
-declare type AppDispatch = any; // Will be defined when we create the store
 
 /**
  * Wrapper around useInjectReducer with typed state
@@ -42,7 +39,7 @@ export const useInjectSaga = (params: {
     key: params.key,
     saga: params.saga,
     mode: params.mode || "daemon",
-  });
+  } as any);
 };
 
 /**

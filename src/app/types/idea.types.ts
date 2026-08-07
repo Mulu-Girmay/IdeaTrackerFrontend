@@ -4,7 +4,7 @@ export const IdeaStatus = {
   ARCHIVED: "archived",
 } as const;
 
-export type IdeaStatus = typeof IdeaStatus[keyof typeof IdeaStatus];
+export type IdeaStatus = (typeof IdeaStatus)[keyof typeof IdeaStatus];
 
 export const IdeaCategory = {
   TECHNOLOGY: "technology",
@@ -14,8 +14,7 @@ export const IdeaCategory = {
   OTHER: "other",
 } as const;
 
-export type IdeaCategory = typeof IdeaCategory[keyof typeof IdeaCategory];
-
+export type IdeaCategory = (typeof IdeaCategory)[keyof typeof IdeaCategory];
 
 export interface Idea {
   _id: string;
@@ -59,3 +58,4 @@ export interface IdeaState {
     total: number;
     limit: number;
   };
+}

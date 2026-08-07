@@ -4,16 +4,18 @@ export interface ApiResponse<T = any> {
   data: T;
 }
 
+export interface Pagination {
+  page: number;
+  totalPages: number;
+  total: number;
+  limit: number;
+}
+
 export interface PaginatedResponse<T> {
   success: boolean;
   data: {
-    [key: string]: T[];
-    pagination: {
-      page: number;
-      totalPages: number;
-      total: number;
-      limit: number;
-    };
+    items: T[];
+    pagination: Pagination;
   };
 }
 

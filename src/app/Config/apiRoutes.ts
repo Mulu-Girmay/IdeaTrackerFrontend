@@ -1,10 +1,10 @@
-import axios, {
+import axios from "axios";
+import type {
   AxiosInstance,
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-import { store } from "../store";
-import { logout, refreshToken } from "../store/slices/authSlice";
+
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -66,14 +66,14 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      await store.dispatch(refreshToken()).unwrap();
-
+      // Refresh token call should be done via direct api call or stubbed out since store is not set up
+      await api.post<{ success: boolean; token: string }>("/users/refresh-token");
+      
       processQueue(null);
 
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError as Error);
-      store.dispatch(logout());
 
       if (typeof window !== "undefined") {
         window.location.href = "/login";

@@ -103,7 +103,6 @@ const StyledTextField = styled(TextField, {
     },
   }),
 
-  // Custom width
   ...(customWidth && {
     width: customWidth,
   }),
@@ -228,7 +227,9 @@ const FormInput: React.FC<FormInputProps> = ({
         hasError={showError}
         minimizeWidth={minimizeWidth}
         customWidth={customWidth}
-        {...(Object.keys(inputProps).length > 0 && { InputProps: inputProps })}
+        slotProps={{
+          input: inputProps,
+        }}
         sx={sx}
       />
 

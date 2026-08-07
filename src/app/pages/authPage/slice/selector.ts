@@ -24,7 +24,11 @@ export const selectIsLoading = createSelector(
   (auth) => auth.isLoading
 );
 
+export const selectAuthLoading = selectIsLoading; // Alias for backwards compatibility
+
 export const selectError = createSelector(
   [selectAuthDomain],
   (auth) => auth.error
 );
+
+export const selectAuthError = selectError; // Alias for backwards compatibility

@@ -5,11 +5,9 @@ import SubmitButton from "../../components/Button/SubmitButton";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

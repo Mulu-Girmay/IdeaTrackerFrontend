@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@manaflair/redux-batch": "^1.0.0",
     "@mui/icons-material": "^9.3.1",
+    "@mui/material": "^9.3.1",
     "@reduxjs/toolkit": "^2.12.0",
     "@types/redux-logger": "^3.0.13",
     "axios": "^1.19.0",
@@ -19,13 +22,11 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.3.0",
+    "react-router-dom": "^7.18.2",
     "redux-injectors": "^2.1.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.5.1",
-    "yup": "^1.7.1",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/material": "^9.3.1"
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

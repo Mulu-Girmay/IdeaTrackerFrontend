@@ -14,6 +14,7 @@ export interface AuthResponse {
     token: string;
   };
 }
+import type { UserStats, UpdateUserData } from "../../types/user.types";
 
 export const authService = {
   register: async (data: RegisterData): Promise<AuthResponse> => {
@@ -86,6 +87,69 @@ export const authService = {
     const response = await api.post<{ success: boolean; message: string }>(
       "/users/change-password",
       data,
+    );
+    return response.data;
+  },
+  allUsers: async (data?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }): Promise<{
+    success: boolean;
+    data: { users: User[]; total: number; page: number; totalPages: number };
+  }> => {
+    const response = await api.get<{
+      success: boolean;
+      data: { users: User[]; total: number; page: number; totalPages: number };
+    }>("/users/allUsers", { params: data });
+    return response.data;
+  },
+
+  userStats: async (): Promise<{
+    success: boolean;
+    data: UserStats;
+  }> => {
+    const response = await api.get<{
+      success: boolean;
+      data: UserStats;
+    }>("/users/userStats");
+    return response.data;
+  },
+
+  getUserById: async (
+    id: string,
+  ): Promise<{ success: boolean; data: User }> => {
+    const response = await api.get<{ success: boolean; data: User }>(
+      `/users/viewUser/${id}`,
+    );
+    return response.data;
+  },
+
+  editUser: async (
+    id: string,
+    data: UpdateUserData,
+  ): Promise<{ success: boolean; data: User }> => {
+    const response = await api.put<{ success: boolean; data: User }>(
+      `/users/editUser/${id}`,
+      data,
+    );
+    return response.data;
+  },
+
+  deleteUser: async (
+    id: string,
+  ): Promise<{ success: boolean; message: string }> => {
+    const response = await api.delete<{ success: boolean; message: string }>(
+      `/users/deleteUser/${id}`,
+    );
+    return response.data;
+  },
+
+  activateUser: async (
+    id: string,
+  ): Promise<{ success: boolean; data: User }> => {
+    const response = await api.post<{ success: boolean; data: User }>(
+      `/users/activateUser/${id}/activate`,
     );
     return response.data;
   },

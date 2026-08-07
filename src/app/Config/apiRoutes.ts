@@ -5,7 +5,6 @@ import type {
   InternalAxiosRequestConfig,
 } from "axios";
 
-
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const api: AxiosInstance = axios.create({
@@ -13,8 +12,8 @@ const api: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // Important: This sends cookies with requests
-  timeout: 30000, // 30 seconds timeout
+  withCredentials: true,
+  timeout: 30000,
 });
 
 let isRefreshing = false;
@@ -24,7 +23,6 @@ let failedQueue: Array<{
   config: InternalAxiosRequestConfig;
 }> = [];
 
-// Process the failed queue
 const processQueue = (error: Error | null) => {
   failedQueue.forEach((promise) => {
     if (error) {
@@ -66,9 +64,10 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      // Refresh token call should be done via direct api call or stubbed out since store is not set up
-      await api.post<{ success: boolean; token: string }>("/users/refresh-token");
-      
+      await api.post<{ success: boolean; token: string }>(
+        "/users/refresh-token",
+      );
+
       processQueue(null);
 
       return api(originalRequest);

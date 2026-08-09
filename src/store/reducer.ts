@@ -6,9 +6,17 @@ import type { RootState } from "./types/RootState";
 
 import authReducer from "../app/pages/authPage/slice";
 import { authSliceName } from "../app/pages/authPage/slice";
+import forgotPasswordReducer, {
+  forgotPasswordSliceName,
+} from "../app/pages/ForgotPasswordPage/slice";
+import resetPasswordReducer, {
+  resetPasswordSliceName,
+} from "../app/pages/ResetPage/slice";
 
 const initialReducers: Record<string, Reducer> = {
   [authSliceName]: authReducer,
+  [forgotPasswordSliceName]: forgotPasswordReducer,
+  [resetPasswordSliceName]: resetPasswordReducer,
 };
 
 export function createReducerManager(

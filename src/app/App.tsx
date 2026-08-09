@@ -7,6 +7,7 @@ import {
 import "../App.css";
 import LoginPage from "./pages/authPage/Login";
 import RegisterForm from "./pages/authPage/Register";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/register" replace />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
       </Routes>
     </Router>
   );

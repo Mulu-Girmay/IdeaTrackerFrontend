@@ -1,4 +1,5 @@
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
@@ -76,6 +77,7 @@ const LoginPage = () => {
             touched={formik.touched.email}
             required
             fullWidth
+            sx={{ mb: 2 }}
           />
 
           <FormInput
@@ -90,6 +92,7 @@ const LoginPage = () => {
             showPasswordToggle
             required
             fullWidth
+            sx={{ mb: 2 }}
           />
 
           <SubmitButton
@@ -106,7 +109,12 @@ const LoginPage = () => {
           <Box sx={{ mt: 2, textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
               Don't have an account?{" "}
-              <Link href="/signup" underline="hover" sx={{ fontWeight: 600 }}>
+              <Link 
+                component={RouterLink} 
+                to="/register" 
+                underline="hover" 
+                sx={{ fontWeight: 600 }}
+              >
                 Sign Up
               </Link>
             </Typography>

@@ -1,4 +1,5 @@
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
@@ -64,7 +65,7 @@ const RegisterForm = () => {
         p: 2,
       }}
     >
-      <Paper sx={{ p: 4, width: "100%" }}>
+      <Paper sx={{ p: 4, maxWidth: 400, width: "100%" }}>
         <Typography variant="h5" gutterBottom align="center">
           Register
         </Typography>
@@ -147,7 +148,12 @@ const RegisterForm = () => {
           <Box sx={{ mt: 2, textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
               Already have an account?{" "}
-              <Link href="/login" underline="hover" sx={{ fontWeight: 600 }}>
+              <Link
+                component={RouterLink}
+                to="/login"
+                underline="hover"
+                sx={{ fontWeight: 600 }}
+              >
                 Sign In
               </Link>
             </Typography>

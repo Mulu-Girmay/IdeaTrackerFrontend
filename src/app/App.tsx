@@ -1,15 +1,23 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "../App.css";
-import SubmitButton from "./components/Button/SubmitButton";
-import FormInput from "./components/Input/Input";
 import LoginPage from "./pages/authPage/Login";
 import RegisterForm from "./pages/authPage/Register";
 
 function App() {
   return (
-    <>
-      <LoginPage />
-      <RegisterForm />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/register" replace />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<Navigate to="/register" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

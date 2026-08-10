@@ -1,13 +1,14 @@
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { registerRequest } from "./slice/slice";
-import { selectIsLoading, selectError } from "./slice/selector";
+import { selectIsLoading, selectError, selectIsAuthenticated, selectUser } from "./slice/selector";
 import type { RegisterData } from "../../types/auth.types";
+import { useEffect } from "react";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -34,8 +35,18 @@ const validationSchema = Yup.object({
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
+
+  // Navigate to dashboard after successful registration
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const formik = useFormik({
     initialValues: {

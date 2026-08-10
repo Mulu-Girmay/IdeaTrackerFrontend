@@ -1,5 +1,5 @@
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
@@ -7,7 +7,8 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "./slice/slice";
 import type { LoginCredentials } from "../../types/auth.types";
-import { selectIsLoading, selectError } from "./slice/selector";
+import { selectIsLoading, selectError, selectIsAuthenticated, selectUser } from "./slice/selector";
+import { useEffect } from "react";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -21,8 +22,21 @@ const validationSchema = Yup.object({
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
+
+  // Navigate to dashboard after successful login
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Get the redirect path from location state, or default to dashboard
+      const from = (location.state as any)?.from?.pathname || "/dashboard";
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, user, navigate, location]);
 
   const formik = useFormik({
     initialValues: {

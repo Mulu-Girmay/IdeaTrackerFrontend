@@ -92,7 +92,9 @@ const ForgotPasswordPage = () => {
             size="large"
             isLoading={isLoading}
             type="submit"
-            disabled={!formik.isValid || !formik.dirty || isLoading || success}
+            disabled={
+              !formik.isValid || !formik.dirty || isLoading || success !== null
+            }
             sx={{ mt: 2 }}
           >
             Send Reset Link

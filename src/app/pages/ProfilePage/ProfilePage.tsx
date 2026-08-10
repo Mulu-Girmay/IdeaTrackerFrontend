@@ -84,7 +84,7 @@ const passwordValidationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters"),
   newPassword: Yup.string()
     .required("New password is required")
-    .min(8, "Password must be at least 8 characters")
+    .min(6, "Password must be at least 6 characters")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       "Password must contain uppercase, lowercase, and number",

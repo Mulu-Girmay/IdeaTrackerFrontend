@@ -6,4 +6,14 @@ export interface RootState {
   auth: AuthState;
   ideas: IdeaState;
   users: UserState;
+  forgotPassword: {
+    isLoading: boolean;
+    error: string | null;
+    success: string | null;
+  };
+  resetPassword: {
+    isLoading: boolean;
+    error: string | null;
+    success: string | null;
+  };
 }

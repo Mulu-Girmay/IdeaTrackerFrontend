@@ -7,7 +7,12 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "./slice/slice";
 import type { LoginCredentials } from "../../types/auth.types";
-import { selectIsLoading, selectError, selectIsAuthenticated, selectUser } from "./slice/selector";
+import {
+  selectIsLoading,
+  selectError,
+  selectIsAuthenticated,
+  selectUser,
+} from "./slice/selector";
 import { useEffect } from "react";
 
 const validationSchema = Yup.object({
@@ -29,10 +34,8 @@ const LoginPage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
 
-  // Navigate to dashboard after successful login
   useEffect(() => {
     if (isAuthenticated && user) {
-      // Get the redirect path from location state, or default to dashboard
       const from = (location.state as any)?.from?.pathname || "/dashboard";
       navigate(from, { replace: true });
     }
@@ -117,16 +120,20 @@ const LoginPage = () => {
 
           <Box sx={{ mt: 2, textAlign: "center" }}>
             <Box sx={{ mt: 1, textAlign: "center" }}>
-  <Link href="/forgot-password" underline="hover" sx={{ fontSize: "0.875rem" }}>
-    Forgot password?
-  </Link>
-</Box>
+              <Link
+                href="/forgot-password"
+                underline="hover"
+                sx={{ fontSize: "0.875rem" }}
+              >
+                Forgot password?
+              </Link>
+            </Box>
             <Typography variant="body2" color="text.secondary">
               Don't have an account?{" "}
-              <Link 
-                component={RouterLink} 
-                to="/register" 
-                underline="hover" 
+              <Link
+                component={RouterLink}
+                to="/register"
+                underline="hover"
                 sx={{ fontWeight: 600 }}
               >
                 Sign Up

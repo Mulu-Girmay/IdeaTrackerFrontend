@@ -141,7 +141,9 @@ const ResetPasswordPage = () => {
             size="large"
             isLoading={isLoading}
             type="submit"
-            disabled={!formik.isValid || !formik.dirty || isLoading || success}
+            disabled={
+              !formik.isValid || !formik.dirty || isLoading || success !== null
+            }
             sx={{ mt: 2 }}
           >
             Reset Password
@@ -149,10 +151,10 @@ const ResetPasswordPage = () => {
 
           <Box sx={{ mt: 2, textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
-              <Link 
-                component={RouterLink} 
-                to="/login" 
-                underline="hover" 
+              <Link
+                component={RouterLink}
+                to="/login"
+                underline="hover"
                 sx={{ fontWeight: 600 }}
               >
                 Back to Sign In

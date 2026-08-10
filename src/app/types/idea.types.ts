@@ -72,3 +72,16 @@ export type IdeaCategoryValues =
 
 export const IdeaStatusList = Object.values(IdeaStatus);
 export const IdeaCategoryList = Object.values(IdeaCategory);
+export interface IdeaState {
+  ideas: Idea[];
+  selectedIdea: Idea | null;
+  isLoading: boolean;
+  error: string | null;
+  success: string | null;
+  pagination: {
+    page: number;
+    totalPages: number;
+    total: number;
+    limit: number;
+  };
+}

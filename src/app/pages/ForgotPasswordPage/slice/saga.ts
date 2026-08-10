@@ -1,6 +1,7 @@
 // src/store/auth/saga/forgotPassword.saga.ts
 import { call, put, takeLatest } from "redux-saga/effects";
 import { authService } from "../../../Config/services/auth.service";
+import { getErrorMessage } from "../../../Config/utils/getErrorMessage";
 import {
   forgotPasswordRequest,
   forgotPasswordSuccess,
@@ -28,9 +29,10 @@ function* handleForgotPassword(action: { type: string; payload: string }) {
   } catch (error: any) {
     yield put(
       forgotPasswordFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to send reset link",
+        getErrorMessage(
+          error,
+          "We couldn't send the reset link. Please try again.",
+        ),
       ),
     );
   }

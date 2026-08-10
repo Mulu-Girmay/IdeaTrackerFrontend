@@ -1,8 +1,8 @@
-// src/store/idea/saga/index.ts
 import { call, put, takeLatest } from "redux-saga/effects";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { SagaIterator } from "redux-saga";
 import { ideaService } from "../../../Config/services/idea.service";
+import { getErrorMessage } from "../../../Config/utils/getErrorMessage";
 import {
   createIdeaRequest,
   createIdeaSuccess,
@@ -25,7 +25,9 @@ import {
 } from "./slice";
 import type { CreateIdeaData, UpdateIdeaData } from "../../../types/idea.types";
 
-function* handleCreateIdea(action: PayloadAction<CreateIdeaData>): SagaIterator {
+function* handleCreateIdea(
+  action: PayloadAction<CreateIdeaData>,
+): SagaIterator {
   try {
     const response = yield call([ideaService, "createIdea"], action.payload);
     if (response.success) {
@@ -36,9 +38,7 @@ function* handleCreateIdea(action: PayloadAction<CreateIdeaData>): SagaIterator 
   } catch (error: any) {
     yield put(
       createIdeaFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to create idea",
+        getErrorMessage(error, "We couldn't save your idea. Please try again."),
       ),
     );
   }
@@ -67,9 +67,10 @@ function* handleGetMyIdeas(
   } catch (error: any) {
     yield put(
       getMyIdeasFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to fetch ideas",
+        getErrorMessage(
+          error,
+          "We couldn't load your ideas. Please try again.",
+        ),
       ),
     );
   }
@@ -101,9 +102,7 @@ function* handleGetAllIdeas(
   } catch (error: any) {
     yield put(
       getAllIdeasFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to fetch ideas",
+        getErrorMessage(error, "We couldn't load ideas. Please try again."),
       ),
     );
   }
@@ -120,9 +119,7 @@ function* handleGetIdeaById(action: PayloadAction<string>): SagaIterator {
   } catch (error: any) {
     yield put(
       getIdeaByIdFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to fetch idea",
+        getErrorMessage(error, "We couldn't load this idea. Please try again."),
       ),
     );
   }
@@ -145,9 +142,10 @@ function* handleUpdateIdea(
   } catch (error: any) {
     yield put(
       updateIdeaFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to update idea",
+        getErrorMessage(
+          error,
+          "We couldn't update your idea. Please try again.",
+        ),
       ),
     );
   }
@@ -164,9 +162,10 @@ function* handleDeleteIdea(action: PayloadAction<string>): SagaIterator {
   } catch (error: any) {
     yield put(
       deleteIdeaFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to delete idea",
+        getErrorMessage(
+          error,
+          "We couldn't delete your idea. Please try again.",
+        ),
       ),
     );
   }

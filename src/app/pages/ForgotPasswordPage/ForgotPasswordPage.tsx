@@ -1,5 +1,3 @@
-// src/pages/ForgotPasswordPage/index.tsx
-import { useState } from "react";
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";

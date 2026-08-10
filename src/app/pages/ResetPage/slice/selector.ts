@@ -1,7 +1,7 @@
 // src/pages/ResetPasswordPage/slice/selector.ts
 import { createSelector } from "@reduxjs/toolkit";
-import type { RootState } from "../../../store/types/RootState";
-import { resetPasswordSliceName } from "./index";
+import type { RootState } from "../../../../store/types/RootState";
+import { resetPasswordSliceName } from "./slice";
 
 const selectResetPasswordDomain = (state: RootState) =>
   state[resetPasswordSliceName] || {

@@ -1,4 +1,3 @@
-// src/pages/ForgotPasswordPage/slice/selector.ts
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../../../../store/types/RootState";
 import { forgotPasswordSliceName } from "./slice";

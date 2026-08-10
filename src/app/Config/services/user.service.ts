@@ -19,12 +19,12 @@ export interface ProfileResponse {
 
 export const userService = {
   getProfile: async (): Promise<ProfileResponse> => {
-    const response = await api.get<ProfileResponse>("/users/profile");
+    const response = await api.get<ProfileResponse>("/users/me");
     return response.data;
   },
 
   updateProfile: async (data: UpdateProfileData): Promise<ProfileResponse> => {
-    const response = await api.put<ProfileResponse>("/users/profile", data);
+    const response = await api.put<ProfileResponse>("/users/updateMe", data);
     return response.data;
   },
 
@@ -32,9 +32,9 @@ export const userService = {
     currentPassword: string;
     newPassword: string;
   }): Promise<ProfileResponse> => {
-    const response = await api.put<ProfileResponse>(
+    const response = await api.post<ProfileResponse>(
       "/users/change-password",
-      data
+      data,
     );
     return response.data;
   },

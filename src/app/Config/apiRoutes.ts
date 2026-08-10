@@ -34,6 +34,17 @@ const processQueue = (error: Error | null) => {
   failedQueue = [];
 };
 
+const AUTH_ENDPOINTS = [
+  "/users/login",
+  "/users/register",
+  "/users/refresh-token",
+  "/users/forgot-password",
+  "/users/reset-password",
+];
+
+const isAuthEndpoint = (url?: string): boolean =>
+  !!url && AUTH_ENDPOINTS.some((path) => url.includes(path));
+
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     return config;
@@ -50,7 +61,11 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (
+      error.response?.status !== 401 ||
+      originalRequest._retry ||
+      isAuthEndpoint(originalRequest.url)
+    ) {
       return Promise.reject(error);
     }
 

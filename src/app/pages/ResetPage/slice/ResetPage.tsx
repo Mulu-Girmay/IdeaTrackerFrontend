@@ -8,7 +8,7 @@ import SubmitButton from "../../../components/Button/SubmitButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPasswordRequest } from "./index";
+import { resetPasswordRequest } from "./slice";
 import {
   selectResetPasswordLoading,
   selectResetPasswordError,

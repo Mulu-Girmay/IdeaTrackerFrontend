@@ -16,7 +16,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import {
-  Person as PersonIcon,
   Edit as EditIcon,
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -37,7 +36,6 @@ import {
   selectSuccess,
 } from "../authPage/slice/selector";
 
-// Helper function for Formik errors
 const getErrorMessage = (error: any): string => {
   if (typeof error === "string") return error;
   if (typeof error === "object" && error !== null) {
@@ -84,7 +82,7 @@ const passwordValidationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters"),
   newPassword: Yup.string()
     .required("New password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       "Password must contain uppercase, lowercase, and number",

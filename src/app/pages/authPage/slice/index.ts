@@ -1,4 +1,4 @@
 export * from "./slice";
 export * from "./selector";
 export * from "./types";
-export { resetPasswordSaga } from "./saga";
+export { authSaga } from "./saga";

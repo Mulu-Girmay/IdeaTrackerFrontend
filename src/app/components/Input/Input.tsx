@@ -1,4 +1,3 @@
-// src/components/common/FormInput/index.tsx
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import {

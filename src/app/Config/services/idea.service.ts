@@ -1,4 +1,3 @@
-// src/Config/services/idea.service.ts
 import api from "../apiRoutes";
 import type {
   CreateIdeaData,

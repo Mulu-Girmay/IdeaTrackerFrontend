@@ -1,6 +1,6 @@
-// src/store/auth/saga/resetPassword.saga.ts
 import { call, put, takeLatest } from "redux-saga/effects";
 import { authService } from "../../../Config/services/auth.service";
+import { getErrorMessage } from "../../../Config/utils/getErrorMessage";
 import {
   resetPasswordRequest,
   resetPasswordSuccess,
@@ -30,9 +30,10 @@ function* handleResetPassword(action: {
   } catch (error: any) {
     yield put(
       resetPasswordFailure(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to reset password",
+        getErrorMessage(
+          error,
+          "We couldn't reset your password. The link may have expired — request a new one.",
+        ),
       ),
     );
   }

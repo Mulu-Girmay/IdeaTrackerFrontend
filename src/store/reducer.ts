@@ -11,11 +11,15 @@ import forgotPasswordReducer, {
 import resetPasswordReducer, {
   resetPasswordSliceName,
 } from "../app/pages/ResetPage/slice";
+import ideaReducer, {
+  ideaSliceName,
+} from "../app/pages/ideaPage/slice/slice";
 
 const initialReducers: Record<string, Reducer> = {
   [authSliceName]: authReducer,
   [forgotPasswordSliceName]: forgotPasswordReducer,
   [resetPasswordSliceName]: resetPasswordReducer,
+  [ideaSliceName]: ideaReducer,
 };
 
 export function createReducerManager(

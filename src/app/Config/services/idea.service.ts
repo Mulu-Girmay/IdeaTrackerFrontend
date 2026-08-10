@@ -5,7 +5,7 @@ import type {
   UpdateIdeaData,
   IdeasResponse,
   IdeaResponse,
-} from "../../pages/ideaPage/slice/types";
+} from "../../types/idea.types";
 
 export const ideaService = {
   createIdea: async (data: CreateIdeaData): Promise<IdeaResponse> => {

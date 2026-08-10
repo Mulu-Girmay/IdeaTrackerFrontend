@@ -6,7 +6,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Button,
   TextField,
   MenuItem,
@@ -22,6 +21,7 @@ import {
   InputAdornment,
   Fab,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import {
   Add as AddIcon,
   Search as SearchIcon,
@@ -40,8 +40,9 @@ import {
   selectIdeaError,
   selectIdeaPagination,
   selectIdeaSuccess,
-} from "../DashboardPage/slice/idea.selector";
+} from "../../pages/ideaPage/slice/selector";
 import { IdeaStatus, IdeaCategory } from "../../types/idea.types";
+import type { Idea } from "../../types/idea.types";
 
 const IdeaListPage = () => {
   const navigate = useNavigate();
@@ -106,17 +107,17 @@ const IdeaListPage = () => {
     navigate("/dashboard/ideas/create");
   };
 
-  const handleViewIdea = (id: string) => {
-    navigate(`/dashboard/ideas/${id}`);
+  const handleViewIdea = (idea: Idea) => {
+    navigate(`/dashboard/ideas/${idea._id}`);
   };
 
-  const handleEditIdea = (id: string) => {
-    navigate(`/dashboard/ideas/edit/${id}`);
+  const handleEditIdea = (idea: Idea) => {
+    navigate(`/dashboard/ideas/edit/${idea._id}`);
   };
 
-  const handleDeleteIdea = (id: string) => {
+  const handleDeleteIdea = (idea: Idea) => {
     if (window.confirm("Are you sure you want to delete this idea?")) {
-      dispatch(deleteIdeaRequest(id));
+      dispatch(deleteIdeaRequest(idea._id));
     }
   };
 
@@ -125,7 +126,6 @@ const IdeaListPage = () => {
   return (
     <Box sx={{ py: 4 }}>
       <Container maxWidth="xl">
-        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -152,7 +152,6 @@ const IdeaListPage = () => {
           </Button>
         </Box>
 
-        {/* Search and Filters */}
         <Paper sx={{ p: 2, mb: 4 }}>
           <Box
             sx={{
@@ -268,7 +267,7 @@ const IdeaListPage = () => {
         {!isLoading && ideas.length > 0 && (
           <>
             <Grid container spacing={3}>
-              {ideas.map((idea) => (
+              {ideas.map((idea: any) => (
                 <Grid size={{ xs: 12, sm: 6, md: 4 }} key={idea._id}>
                   <IdeaCard
                     idea={idea}
@@ -295,7 +294,6 @@ const IdeaListPage = () => {
           </>
         )}
 
-        {/* Empty State */}
         {!isLoading && ideas.length === 0 && (
           <Paper
             sx={{
@@ -322,7 +320,6 @@ const IdeaListPage = () => {
           </Paper>
         )}
 
-        {/* Results Info */}
         {!isLoading && ideas.length > 0 && (
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Typography variant="body2" color="text.secondary">
@@ -331,7 +328,6 @@ const IdeaListPage = () => {
           </Box>
         )}
 
-        {/* FAB for Create Idea on Mobile */}
         <Fab
           color="primary"
           aria-label="add"

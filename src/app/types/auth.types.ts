@@ -21,9 +21,20 @@ export interface RegisterData {
   role?: "user" | "admin";
 }
 
+export interface UpdateProfileData {
+  name?: string;
+  email?: string;
+}
+
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  success: string | null;
 }

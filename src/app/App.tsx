@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import DashboardLayout from "./pages/UserDashboard";
 import MyIdeasPage from "./pages/ideaPage/MyIdeasPage";
 import CreateIdeaPage from "./pages/ideaPage/CreateIdeaPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        
+
         {/* Protected Dashboard Routes */}
         <Route
           path="/dashboard"
@@ -35,8 +36,7 @@ function App() {
         >
           <Route index element={<MyIdeasPage />} />
           <Route path="ideas/create" element={<CreateIdeaPage />} />
-          <Route path="profile" element={<div>Profile Page - Coming Soon</div>} />
-          <Route path="settings" element={<div>Settings Page - Coming Soon</div>} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />

@@ -5,4 +5,5 @@ export interface AuthPageState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  success: string | null;
 }

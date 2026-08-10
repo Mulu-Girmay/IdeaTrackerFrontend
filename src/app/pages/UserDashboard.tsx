@@ -97,11 +97,6 @@ const DashboardLayout = () => {
       icon: <ProfileIcon />,
       path: "/dashboard/profile",
     },
-    {
-      text: "Settings",
-      icon: <SettingsIcon />,
-      path: "/dashboard/settings",
-    },
   ];
 
   const isActive = (path: string) => {
@@ -303,17 +298,7 @@ const DashboardLayout = () => {
               </ListItemIcon>
               Profile
             </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleNavigation("/dashboard/settings");
-                handleProfileMenuClose();
-              }}
-            >
-              <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
+
             <Divider />
             <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
               <ListItemIcon>

@@ -20,8 +20,8 @@ import {
   IconButton,
   InputAdornment,
   Fab,
+  Grid,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import {
   Add as AddIcon,
   Search as SearchIcon,
@@ -167,22 +167,24 @@ const IdeaListPage = () => {
               value={filters.search}
               onChange={(e) => handleFilterChange("search", e.target.value)}
               sx={{ flex: 1, minWidth: 200 }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: filters.search && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleFilterChange("search", "")}
-                    >
-                      <ClearIcon fontSize="small" />
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: filters.search && (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleFilterChange("search", "")}
+                      >
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
 

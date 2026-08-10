@@ -67,7 +67,7 @@ const MyIdeasPage = () => {
         limit: 9,
         ...(filters.status && { status: filters.status }),
         ...(filters.category && { category: filters.category }),
-      })
+      }),
     );
   }, [dispatch, filters]);
 
@@ -110,7 +110,10 @@ const MyIdeasPage = () => {
     }));
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    page: number,
+  ) => {
     setFilters((prev) => ({ ...prev, page }));
   };
 
@@ -154,13 +157,21 @@ const MyIdeasPage = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }} onClose={() => dispatch(resetIdeaState())}>
+        <Alert
+          severity="error"
+          sx={{ mb: 3 }}
+          onClose={() => dispatch(resetIdeaState())}
+        >
           {error}
         </Alert>
       )}
 
       {success && (
-        <Alert severity="success" sx={{ mb: 3 }} onClose={() => dispatch(resetIdeaState())}>
+        <Alert
+          severity="success"
+          sx={{ mb: 3 }}
+          onClose={() => dispatch(resetIdeaState())}
+        >
           {success}
         </Alert>
       )}
@@ -252,7 +263,10 @@ const MyIdeasPage = () => {
                         mb: 2,
                       }}
                     >
-                      <Typography variant="h6" sx={{ fontWeight: 600, flex: 1 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: 600, flex: 1 }}
+                      >
                         {idea.title}
                       </Typography>
                       <Chip
@@ -291,7 +305,9 @@ const MyIdeasPage = () => {
                     </Typography>
                   </CardContent>
 
-                  <CardActions sx={{ justifyContent: "flex-end", px: 2, pb: 2 }}>
+                  <CardActions
+                    sx={{ justifyContent: "flex-end", px: 2, pb: 2 }}
+                  >
                     <IconButton
                       size="small"
                       color="primary"
@@ -340,7 +356,11 @@ const MyIdeasPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+          >
             Delete
           </Button>
         </DialogActions>

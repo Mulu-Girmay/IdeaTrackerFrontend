@@ -31,7 +31,7 @@ import {
   AccessTime as AccessTimeIcon,
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import type { Idea, IdeaStatus } from "../types/idea.types";
+import type { Idea, IdeaStatus } from "../../types/idea.types";
 
 export interface IdeaCardProps {
   idea: Idea;

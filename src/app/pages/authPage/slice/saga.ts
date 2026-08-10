@@ -13,7 +13,7 @@ import {
   logoutRequest,
   logoutSuccess,
   logoutFailure,
-} from "./index";
+} from "./slice";
 
 function* handleLogin(action: PayloadAction<LoginCredentials>) {
   try {

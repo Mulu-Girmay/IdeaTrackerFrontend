@@ -1,14 +1,17 @@
 // src/pages/ForgotPasswordPage/index.tsx
 import { useState } from "react";
 import { Box, Paper, Typography, Link, Alert } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
 import FormInput from "../../components/Input/Input";
 import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { forgotPasswordRequest } from "./slice";
-import { selectForgotPasswordLoading, selectForgotPasswordError, selectForgotPasswordSuccess } from "./slice/selector";
+import { forgotPasswordRequest } from "./slice/slice";
+import {
+  selectForgotPasswordLoading,
+  selectForgotPasswordError,
+  selectForgotPasswordSuccess,
+} from "./slice/selector";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -47,8 +50,14 @@ const ForgotPasswordPage = () => {
           Forgot Password
         </Typography>
 
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 3 }}>
-          Enter your email address and we'll send you a link to reset your password.
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          align="center"
+          sx={{ mb: 3 }}
+        >
+          Enter your email address and we'll send you a link to reset your
+          password.
         </Typography>
 
         {error && (
@@ -92,12 +101,7 @@ const ForgotPasswordPage = () => {
           <Box sx={{ mt: 2, textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
               Remember your password?{" "}
-              <Link 
-                component={RouterLink} 
-                to="/login" 
-                underline="hover" 
-                sx={{ fontWeight: 600 }}
-              >
+              <Link href="/login" underline="hover" sx={{ fontWeight: 600 }}>
                 Sign In
               </Link>
             </Typography>

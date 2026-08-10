@@ -1,7 +1,7 @@
 // src/pages/ForgotPasswordPage/slice/selector.ts
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../../../../store/types/RootState";
-import { forgotPasswordSliceName } from "./index";
+import { forgotPasswordSliceName } from "./slice";
 
 const selectForgotPasswordDomain = (state: RootState) =>
   state[forgotPasswordSliceName] || {

@@ -5,7 +5,7 @@ import SubmitButton from "../../components/Button/SubmitButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { registerRequest } from "./slice/index";
+import { registerRequest } from "./slice/slice";
 import { selectIsLoading, selectError } from "./slice/selector";
 import type { RegisterData } from "../../types/auth.types";
 

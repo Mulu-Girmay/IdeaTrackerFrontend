@@ -1,14 +1,13 @@
-// src/store/reducers.ts
 import { combineReducers } from "@reduxjs/toolkit";
 import type { Reducer, UnknownAction } from "@reduxjs/toolkit";
 import type { ReducerManager } from "./types/types";
 import type { RootState } from "./types/RootState";
 
-import authReducer from "../app/pages/authPage/slice";
-import { authSliceName } from "../app/pages/authPage/slice";
+import authReducer from "../app/pages/authPage/slice/slice";
+import { authSliceName } from "../app/pages/authPage/slice/slice";
 import forgotPasswordReducer, {
   forgotPasswordSliceName,
-} from "../app/pages/ForgotPasswordPage/slice";
+} from "../app/pages/ForgotPasswordPage/slice/slice";
 import resetPasswordReducer, {
   resetPasswordSliceName,
 } from "../app/pages/ResetPage/slice";

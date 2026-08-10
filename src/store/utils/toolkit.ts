@@ -11,3 +11,4 @@ export function createTypedSlice<
 }
 
 export default createTypedSlice;
+//type safe wrapper

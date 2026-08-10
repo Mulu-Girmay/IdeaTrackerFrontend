@@ -29,8 +29,8 @@ export interface Idea {
         email: string;
       }
     | string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface CreateIdeaData {
@@ -47,15 +47,28 @@ export interface UpdateIdeaData {
   category?: IdeaCategory;
 }
 
-export interface IdeaState {
-  ideas: Idea[];
-  currentIdea: Idea | null;
-  isLoading: boolean;
-  error: string | null;
-  pagination: {
-    page: number;
-    totalPages: number;
-    total: number;
-    limit: number;
+export interface IdeasResponse {
+  success: boolean;
+  data: {
+    ideas: Idea[];
+    pagination: {
+      page: number;
+      totalPages: number;
+      total: number;
+      limit: number;
+    };
   };
 }
+
+export interface IdeaResponse {
+  success: boolean;
+  message: string;
+  data: Idea;
+}
+
+export type IdeaStatusValues = (typeof IdeaStatus)[keyof typeof IdeaStatus];
+export type IdeaCategoryValues =
+  (typeof IdeaCategory)[keyof typeof IdeaCategory];
+
+export const IdeaStatusList = Object.values(IdeaStatus);
+export const IdeaCategoryList = Object.values(IdeaCategory);

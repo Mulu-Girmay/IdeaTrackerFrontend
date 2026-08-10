@@ -5,7 +5,7 @@ import {
   forgotPasswordRequest,
   forgotPasswordSuccess,
   forgotPasswordFailure,
-} from "../../../pages/ForgotPasswordPage/slice";
+} from "./slice";
 
 function* handleForgotPassword(action: { type: string; payload: string }) {
   try {

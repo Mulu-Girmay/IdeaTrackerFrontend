@@ -40,7 +40,6 @@ const ideaSlice = createSlice({
   name: ideaSliceName,
   initialState,
   reducers: {
-    // Create Idea
     createIdeaRequest: (state, _action: PayloadAction<CreateIdeaData>) => {
       state.isLoading = true;
       state.error = null;

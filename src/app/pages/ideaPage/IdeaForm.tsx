@@ -1,22 +1,10 @@
 import { useEffect } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
-  MenuItem,
-  Alert,
-  Grid,
-} from "@mui/material";
+import { Box, Paper, TextField, MenuItem, Alert, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitButton from "../../components/Button/SubmitButton";
-import {
-  createIdeaRequest,
-  updateIdeaRequest,
-  resetIdeaState,
-} from "./slice/slice";
+import { createIdeaRequest, resetIdeaState } from "./slice/slice";
 import {
   selectIdeaLoading,
   selectIdeaError,
@@ -54,23 +42,15 @@ const validationSchema = Yup.object({
     .required("Category is required"),
 });
 
-// Helper function to capitalize first letter
 const capitalizeFirst = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const IdeaForm = ({
-  mode,
-  initialData,
-  onSuccess,
-  onCancel,
-}: IdeaFormProps) => {
+const IdeaForm = ({ initialData, onSuccess, onCancel }: IdeaFormProps) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIdeaLoading);
   const error = useSelector(selectIdeaError);
   const success = useSelector(selectIdeaSuccess);
-
-  const isEditMode = mode === "edit";
 
   const formik = useFormik({
     initialValues: {
@@ -81,7 +61,14 @@ const IdeaForm = ({
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("form SUbmitted");
+      dispatch(
+        createIdeaRequest({
+          title: values.title,
+          description: values.description,
+          status: values.status as IdeaStatus,
+          category: values.category as IdeaCategory,
+        }),
+      );
     },
   });
 
@@ -104,21 +91,9 @@ const IdeaForm = ({
 
   return (
     <Paper sx={{ p: 4, maxWidth: 600, width: "100%", mx: "auto" }}>
-      <Typography variant="h5" gutterBottom>
-        {isEditMode ? "Edit Idea" : "Create New Idea"}
-      </Typography>
-
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
-        </Alert>
-      )}
-
-      {success && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          {isEditMode
-            ? "Idea updated successfully!"
-            : "Idea created successfully!"}
         </Alert>
       )}
 
@@ -212,9 +187,7 @@ const IdeaForm = ({
                 isLoading={isLoading}
                 type="submit"
                 disabled={!formik.isValid || isLoading}
-              >
-                {isEditMode ? "Update Idea" : "Create Idea"}
-              </SubmitButton>
+              ></SubmitButton>
 
               {onCancel && (
                 <SubmitButton

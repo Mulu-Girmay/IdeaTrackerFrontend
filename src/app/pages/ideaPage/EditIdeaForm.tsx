@@ -1,4 +1,3 @@
-// src/components/IdeaEditForm/index.tsx
 import { useEffect } from "react";
 import {
   Box,
@@ -7,25 +6,19 @@ import {
   TextField,
   MenuItem,
   Alert,
-  Grid
+  Grid,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitButton from "../../components/Button/SubmitButton";
-import {
-  updateIdeaRequest,
-  resetIdeaState,
-} from "./slice/slice";
+import { updateIdeaRequest, resetIdeaState } from "./slice/slice";
 import {
   selectIdeaLoading,
   selectIdeaError,
   selectIdeaSuccess,
 } from "./slice/selector";
-import {
-  IdeaStatus,
-  IdeaCategory,
-} from "../../types/idea.types";
+import { IdeaStatus, IdeaCategory } from "../../types/idea.types";
 import type { UpdateIdeaData } from "../../types/idea.types";
 interface IdeaEditFormProps {
   ideaId: string;

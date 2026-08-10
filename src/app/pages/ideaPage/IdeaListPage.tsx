@@ -1,4 +1,3 @@
-// src/pages/IdeaListPage/index.tsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -251,21 +250,18 @@ const IdeaListPage = () => {
           )}
         </Paper>
 
-        {/* Error Message */}
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
           </Alert>
         )}
 
-        {/* Loading State */}
         {isLoading && (
           <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
             <CircularProgress />
           </Box>
         )}
 
-        {/* Ideas Grid */}
         {!isLoading && ideas.length > 0 && (
           <>
             <Grid container spacing={3}>
@@ -281,7 +277,6 @@ const IdeaListPage = () => {
               ))}
             </Grid>
 
-            {/* Pagination */}
             {pagination.totalPages > 1 && (
               <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
                 <Pagination

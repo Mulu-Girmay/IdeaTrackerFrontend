@@ -187,7 +187,6 @@ const ProfilePage = () => {
       </Typography>
 
       <Paper sx={{ maxWidth: 800 }}>
-        {/* Profile Header */}
         <Box
           sx={{
             p: 3,
@@ -222,7 +221,6 @@ const ProfilePage = () => {
 
         <Divider />
 
-        {/* Tabs */}
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={tabValue}
@@ -234,7 +232,6 @@ const ProfilePage = () => {
           </Tabs>
         </Box>
 
-        {/* Messages */}
         {error && (
           <Alert
             severity="error"
@@ -255,7 +252,6 @@ const ProfilePage = () => {
           </Alert>
         )}
 
-        {/* Profile Information Tab */}
         <TabPanel value={tabValue} index={0}>
           <Box sx={{ px: 3, pb: 3 }}>
             <Box

@@ -12,14 +12,6 @@ interface ApiErrorBody {
   details?: ValidationDetail[] | null;
 }
 
-/**
- * Turns an axios/API error into a single, user-friendly string.
- *
- * - If the backend sent field-level validation `details`, those specific
- *   messages are used instead of the generic "Validation failed" wrapper.
- * - Otherwise falls back to the backend's `message`, then the raw axios
- *   error message, then a caller-supplied fallback.
- */
 export const getErrorMessage = (error: unknown, fallback: string): string => {
   const axiosError = error as AxiosError<ApiErrorBody>;
   const data = axiosError?.response?.data;

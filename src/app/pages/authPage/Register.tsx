@@ -6,15 +6,37 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { registerRequest } from "./slice/slice";
-import { selectIsLoading, selectError, selectIsAuthenticated, selectUser } from "./slice/selector";
+import {
+  selectIsLoading,
+  selectError,
+  selectIsAuthenticated,
+  selectUser,
+} from "./slice/selector";
 import type { RegisterData } from "../../types/auth.types";
 import { useEffect } from "react";
 
 const validationSchema = Yup.object({
   name: Yup.string()
-    .required("First name is required")
-    .min(2, "First name must be at least 2 characters")
-    .max(30, "First name cannot exceed 30 characters"),
+    .required("Name is required")
+    .min(3, "Name must be at least 3 characters")
+    .max(30, "Name cannot exceed 30 characters")
+    .matches(
+      /^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$/,
+      "Name can only contain letters, numbers, underscores, and single spaces",
+    )
+    .test(
+      "no-consecutive-spaces",
+      "Name cannot contain consecutive spaces",
+      (value) => !/\s{2,}/.test(value || ""),
+    )
+    .test(
+      "no-leading-trailing-spaces",
+      "Name cannot start or end with a space",
+      (value) => {
+        if (!value) return true;
+        return !value.startsWith(" ") && !value.endsWith(" ");
+      },
+    ),
 
   email: Yup.string()
     .required("Email is required")

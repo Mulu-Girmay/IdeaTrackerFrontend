@@ -22,11 +22,9 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  Dashboard as DashboardIcon,
   Lightbulb as IdeasIcon,
   Add as AddIcon,
   Person as ProfileIcon,
-  Settings as SettingsIcon,
   Logout as LogoutIcon,
   ChevronLeft as ChevronLeftIcon,
 } from "@mui/icons-material";
@@ -108,7 +106,6 @@ const DashboardLayout = () => {
 
   const drawerContent = (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      {/* Logo / Brand */}
       <Box
         sx={{
           p: 2,
@@ -148,7 +145,6 @@ const DashboardLayout = () => {
 
       <Divider />
 
-      {/* Navigation */}
       <List sx={{ flex: 1, px: 1 }}>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>

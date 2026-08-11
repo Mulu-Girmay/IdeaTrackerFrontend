@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Grid,
-  Paper,
   Typography,
   Card,
   CardContent,
@@ -81,7 +80,6 @@ const DashboardOverview = () => {
       icon: <UsersIcon sx={{ fontSize: 32 }} />,
       color: "#1976d2",
       subtitle: `${activeUsers} active users`,
-      trend: "+12%",
     },
     {
       title: "Total Ideas",
@@ -89,7 +87,6 @@ const DashboardOverview = () => {
       icon: <IdeasIcon sx={{ fontSize: 32 }} />,
       color: "#ed6c02",
       subtitle: `${publishedIdeas} published`,
-      trend: "+8%",
     },
     {
       title: "Active Users",
@@ -97,7 +94,6 @@ const DashboardOverview = () => {
       icon: <ActiveUsersIcon sx={{ fontSize: 32 }} />,
       color: "#2e7d32",
       subtitle: `${totalUsers > 0 ? ((activeUsers / totalUsers) * 100).toFixed(1) : 0}% of total`,
-      trend: "+5%",
     },
     {
       title: "Ideas per User",
@@ -105,7 +101,6 @@ const DashboardOverview = () => {
       icon: <TrendingUpIcon sx={{ fontSize: 32 }} />,
       color: "#9c27b0",
       subtitle: "Average engagement",
-      trend: "+15%",
     },
   ];
 
@@ -133,7 +128,12 @@ const DashboardOverview = () => {
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Dashboard Overview
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mt: 0.5 }}
+            component="p"
+          >
             Welcome to the admin dashboard
           </Typography>
         </Box>
@@ -145,15 +145,18 @@ const DashboardOverview = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }} onClose={() => dispatch(clearDashboardError())}>
+        <Alert
+          severity="error"
+          sx={{ mb: 2 }}
+          onClose={() => dispatch(clearDashboardError())}
+        >
           {error}
         </Alert>
       )}
 
-      {/* Stats Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         {statsCards.map((stat, index) => (
-          <Grid key={index} xs={12} sm={6} md={3}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
             <StyledCard>
               <CardContent>
                 <Box
@@ -188,15 +191,6 @@ const DashboardOverview = () => {
                       <TrendingUpIcon
                         sx={{ fontSize: 16, color: "success.main" }}
                       />
-                      <Typography
-                        variant="caption"
-                        sx={{ color: "success.main", fontWeight: 600 }}
-                      >
-                        {stat.trend}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        vs last month
-                      </Typography>
                     </Box>
                   </Box>
                   <StatIconWrapper color={stat.color}>
@@ -207,94 +201,6 @@ const DashboardOverview = () => {
             </StyledCard>
           </Grid>
         ))}
-      </Grid>
-
-      <Grid container spacing={3}>
-        {/* User Statistics */}
-        <Grid xs={12} md={6}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-              User Statistics
-            </Typography>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid xs={6}>
-                <Box
-                  sx={{
-                    p: 2,
-                    bgcolor: "primary.main",
-                    color: "white",
-                    borderRadius: 2,
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {stats?.adminCount || 0}
-                  </Typography>
-                  <Typography variant="caption">Admin Users</Typography>
-                </Box>
-              </Grid>
-              <Grid xs={6}>
-                <Box
-                  sx={{
-                    p: 2,
-                    bgcolor: "secondary.main",
-                    color: "white",
-                    borderRadius: 2,
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {stats?.userCount || 0}
-                  </Typography>
-                  <Typography variant="caption">Regular Users</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-
-        {/* Idea Statistics */}
-        <Grid xs={12} md={6}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-              Idea Statistics
-            </Typography>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid xs={6}>
-                <Box
-                  sx={{
-                    p: 2,
-                    bgcolor: "warning.main",
-                    color: "white",
-                    borderRadius: 2,
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {stats?.draftIdeas || 0}
-                  </Typography>
-                  <Typography variant="caption">Draft Ideas</Typography>
-                </Box>
-              </Grid>
-              <Grid xs={6}>
-                <Box
-                  sx={{
-                    p: 2,
-                    bgcolor: "error.main",
-                    color: "white",
-                    borderRadius: 2,
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {stats?.archivedIdeas || 0}
-                  </Typography>
-                  <Typography variant="caption">Archived Ideas</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
       </Grid>
     </Box>
   );

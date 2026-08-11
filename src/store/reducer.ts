@@ -10,7 +10,6 @@ import { forgotPasswordSliceName } from "../app/pages/ForgotPasswordPage/slice/s
 import resetPasswordReducer from "../app/pages/ResetPage/slice/slice";
 import { resetPasswordSliceName } from "../app/pages/ResetPage/slice/slice";
 
-
 const initialReducers: Record<string, Reducer> = {
   [authSliceName]: authReducer,
   [forgotPasswordSliceName]: forgotPasswordReducer,

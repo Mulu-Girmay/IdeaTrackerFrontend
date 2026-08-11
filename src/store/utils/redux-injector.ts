@@ -34,18 +34,31 @@ export const useInjectSaga = (params: {
   saga: Saga;
   mode?: "once" | "daemon" | "restartable";
 }) => {
+  const store = useStore() as any;
   const injectedRef = useRef(false);
+  const taskRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!injectedRef.current) {
-      // In a production app, you'd want to track running sagas
-      // and use sagaMiddleware.run(params.saga) here
-      // For now, we assume sagas are run through the rootSaga or manually
-      injectedRef.current = true;
-      
-      console.log(`✅ Saga registered: ${params.key}`);
+    if (!injectedRef.current && store.runSaga && params.saga) {
+      try {
+        // Run the saga and store the task
+        taskRef.current = store.runSaga(params.saga);
+        injectedRef.current = true;
+        
+        console.log(`✅ Saga running: ${params.key}`);
+      } catch (error) {
+        console.error(`❌ Failed to run saga ${params.key}:`, error);
+      }
     }
-  }, [params.key, params.saga, params.mode]);
+    
+    // Cleanup function to cancel saga if needed
+    return () => {
+      if (taskRef.current && params.mode !== "daemon") {
+        // Only cancel non-daemon sagas
+        // taskRef.current.cancel();
+      }
+    };
+  }, [store, params.key, params.saga, params.mode]);
 };
 
 export const isReducerInjected = (key: keyof RootState): boolean => {

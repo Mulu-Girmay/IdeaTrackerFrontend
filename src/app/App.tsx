@@ -19,12 +19,16 @@ const ForgotPasswordPage = lazy(
 const ResetPasswordPage = lazy(
   () => import("./pages/ResetPage/slice/ResetPage"),
 );
-const DashboardLayout = lazy(() => import("./pages/UserDashboardPage/UserDashboard"));
+const DashboardLayout = lazy(
+  () => import("./pages/UserDashboardPage/UserDashboard"),
+);
 const MyIdeasPage = lazy(() => import("./pages/ideaPage/MyIdeasPage"));
 const CreateIdeaPage = lazy(() => import("./pages/ideaPage/CreateIdeaPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const AdminDashboard = lazy(() => import("./pages/AdmiPage/AdminDashboard"));
-const DashboardOverview = lazy(() => import("./pages/AdmiPage/DashboardOverview"));
+const DashboardOverview = lazy(
+  () => import("./pages/AdmiPage/DashboardOverview"),
+);
 const UserManagement = lazy(() => import("./pages/AdmiPage/UserManagement"));
 const IdeaManagement = lazy(() => import("./pages/AdmiPage/IdeaManagement"));
 
@@ -43,7 +47,6 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-          {/* User Dashboard Routes */}
           <Route
             path="/dashboard"
             element={
@@ -95,7 +98,6 @@ function App() {
             />
           </Route>
 
-          {/* Admin Dashboard Routes */}
           <Route
             path="/dashboard/admin"
             element={

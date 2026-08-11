@@ -57,7 +57,6 @@ const StatIconWrapper = styled(Box)<{ color?: string }>(({ theme, color }) => ({
 const DashboardOverview = () => {
   const dispatch = useDispatch();
 
-  const stats = useSelector(selectDashboardStats);
   const isLoading = useSelector(selectDashboardLoading);
   const error = useSelector(selectDashboardError);
   const totalUsers = useSelector(selectTotalUsers);

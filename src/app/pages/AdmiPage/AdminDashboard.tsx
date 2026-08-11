@@ -18,7 +18,6 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
-  Tooltip,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -44,7 +43,6 @@ interface MenuItem {
 }
 
 const AdminDashboard = () => {
-  // Inject admin reducers and sagas
   useInjectAdminModule();
 
   const theme = useTheme();
@@ -249,7 +247,8 @@ const AdminDashboard = () => {
           </IconButton>
 
           <Typography variant="h6" sx={{ flex: 1 }}>
-            {menuItems.find((item) => isActive(item.path))?.text || "Admin Dashboard"}
+            {menuItems.find((item) => isActive(item.path))?.text ||
+              "Admin Dashboard"}
           </Typography>
 
           <IconButton onClick={handleProfileMenuOpen} size="small">

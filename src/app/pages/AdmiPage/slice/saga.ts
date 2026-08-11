@@ -44,6 +44,9 @@ import { selectUser } from "../../authPage/slice/selector";
 import type { User } from "../../../types/auth.types";
 import type { UpdateUserData } from "../../../types/user.types";
 
+// Types for API responses
+// NOTE: matches the backend's actual response shape from getAllUsers,
+// which nests page/totalPages/total/limit under `pagination`.
 interface UsersResponse {
   success: boolean;
   data: {
@@ -81,6 +84,7 @@ interface StatsResponse {
   };
 }
 
+// Helper function types
 interface RecentActivity {
   id: string;
   type: "user" | "idea";
@@ -101,6 +105,7 @@ interface GrowthData {
 
 function* handleGetDashboardStats(): SagaIterator {
   try {
+    // Get user to check if admin
     const user: User = yield select(selectUser);
 
     if (!user || user.role !== "admin") {
@@ -110,7 +115,7 @@ function* handleGetDashboardStats(): SagaIterator {
       return;
     }
 
-    const [usersResponse, ideasResponse]: [
+    const [usersResponse, ideasResponse, statsResponse]: [
       UsersResponse,
       IdeasResponse,
       StatsResponse,
@@ -123,6 +128,7 @@ function* handleGetDashboardStats(): SagaIterator {
       ],
     );
 
+    // Process users data
     const users = usersResponse.data?.users || [];
     const totalUsers = usersResponse.data?.pagination?.total ?? users.length;
     const activeUsers = users.filter((u: User) => u.isActive).length;
@@ -177,7 +183,7 @@ function* handleGetDashboardStats(): SagaIterator {
 
 function* handleRefreshDashboard(): SagaIterator {
   try {
-    const [usersResponse, ideasResponse]: [
+    const [usersResponse, ideasResponse, statsResponse]: [
       UsersResponse,
       IdeasResponse,
       StatsResponse,
@@ -190,6 +196,7 @@ function* handleRefreshDashboard(): SagaIterator {
       ],
     );
 
+    // Process data
     const users = usersResponse.data?.users || [];
     const totalUsers = usersResponse.data?.pagination?.total ?? users.length;
     const activeUsers = users.filter((u: User) => u.isActive).length;
@@ -261,7 +268,8 @@ function generateRecentActivity(users: User[], ideas: any[]): RecentActivity[] {
     }
   });
 
-  ideas.forEach((idea: any) => {
+  // Add idea activities
+  ideas.forEach((idea) => {
     if (idea.createdAt) {
       const ownerName =
         typeof idea.owner === "object" && idea.owner !== null
@@ -291,6 +299,7 @@ function generateRecentActivity(users: User[], ideas: any[]): RecentActivity[] {
     }
   });
 
+  // Sort by timestamp and get latest 10
   return activities
     .sort(
       (a, b) =>
@@ -309,6 +318,7 @@ function generateGrowthData(items: any[]): GrowthData[] {
     }
   });
 
+  // Sort dates and create cumulative data
   const sortedDates = Array.from(dateMap.keys()).sort();
   let cumulative = 0;
 
@@ -318,6 +328,7 @@ function generateGrowthData(items: any[]): GrowthData[] {
   });
 }
 
+// User Management Sagas
 function* handleFetchUsers(
   action: PayloadAction<{ page?: number; limit?: number; search?: string }>,
 ): SagaIterator {
@@ -355,6 +366,7 @@ function* handleCreateUser(
       yield call(authService.register, action.payload);
 
     yield put(createUserSuccess(response.data.user));
+    // Refresh users list
     yield put(fetchUsersRequest({ page: 1, limit: 1000 }));
   } catch (error: unknown) {
     const errorMessage =
@@ -395,10 +407,15 @@ function* handleDeleteUser(action: PayloadAction<string>): SagaIterator {
   }
 }
 
-function* handleToggleUserStatus(action: PayloadAction<string>): SagaIterator {
+function* handleToggleUserStatus(
+  action: PayloadAction<{ id: string; isActive: boolean }>,
+): SagaIterator {
   try {
-    const response: Awaited<ReturnType<typeof authService.activateUser>> =
-      yield call(authService.activateUser, action.payload);
+    const { id, isActive } = action.payload;
+
+    const response: { success: boolean; message: string; data: User } = isActive
+      ? yield call(authService.deactivateUser, id)
+      : yield call(authService.activateUser, id);
 
     yield put(toggleUserStatusSuccess(response.data));
   } catch (error: unknown) {
@@ -410,6 +427,7 @@ function* handleToggleUserStatus(action: PayloadAction<string>): SagaIterator {
   }
 }
 
+// Idea Management Sagas
 function* handleFetchIdeas(
   action: PayloadAction<{
     page?: number;
@@ -474,15 +492,19 @@ function* handleDeleteIdea(action: PayloadAction<string>): SagaIterator {
   }
 }
 
+// Saga watcher with proper typing
 export function* adminDashboardSaga(): SagaIterator {
   yield all([
+    // Dashboard stats
     takeLatest(getDashboardStatsRequest.type, handleGetDashboardStats),
     takeLatest(refreshDashboardRequest.type, handleRefreshDashboard),
+    // User management
     takeLatest(fetchUsersRequest.type, handleFetchUsers),
     takeLatest(createUserRequest.type, handleCreateUser),
     takeLatest(updateUserRequest.type, handleUpdateUser),
     takeLatest(deleteUserRequest.type, handleDeleteUser),
     takeLatest(toggleUserStatusRequest.type, handleToggleUserStatus),
+    // Idea management
     takeLatest(fetchIdeasRequest.type, handleFetchIdeas),
     takeLatest(updateIdeaStatusRequest.type, handleUpdateIdeaStatus),
     takeLatest(deleteIdeaRequest.type, handleDeleteIdea),

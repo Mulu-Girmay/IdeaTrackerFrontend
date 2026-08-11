@@ -190,7 +190,9 @@ const UserManagement = () => {
   };
 
   const handleToggleUserStatus = (user: User) => {
-    dispatch(toggleUserStatusRequest(user._id));
+    dispatch(
+      toggleUserStatusRequest({ id: user._id, isActive: user.isActive }),
+    );
     handleMenuClose();
   };
 

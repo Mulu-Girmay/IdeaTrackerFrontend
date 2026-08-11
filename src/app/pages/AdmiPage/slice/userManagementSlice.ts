@@ -29,6 +29,7 @@ const userManagementSlice = createSlice({
   name: userManagementSliceName,
   initialState,
   reducers: {
+    // Fetch All Users
     fetchUsersRequest: (
       state,
       _action: PayloadAction<{
@@ -61,6 +62,7 @@ const userManagementSlice = createSlice({
       state.error = action.payload;
     },
 
+    // Create User
     createUserRequest: (
       state,
       _action: PayloadAction<{
@@ -120,7 +122,10 @@ const userManagementSlice = createSlice({
       state.error = action.payload;
     },
 
-    toggleUserStatusRequest: (state, _action: PayloadAction<string>) => {
+    toggleUserStatusRequest: (
+      state,
+      _action: PayloadAction<{ id: string; isActive: boolean }>,
+    ) => {
       state.isLoading = true;
       state.error = null;
       state.success = null;

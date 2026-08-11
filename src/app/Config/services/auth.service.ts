@@ -161,6 +161,20 @@ export const authService = {
     return response.data;
   },
 
+  // Same backend endpoint as deleteUser (a soft-delete that flips isActive
+  // to false) - named separately here so the "Deactivate" toggle action
+  // reads clearly at the call site, and so we get back the updated user.
+  deactivateUser: async (
+    id: string,
+  ): Promise<{ success: boolean; message: string; data: User }> => {
+    const response = await api.delete<{
+      success: boolean;
+      message: string;
+      data: User;
+    }>(`/users/deleteUser/${id}`);
+    return response.data;
+  },
+
   activateUser: async (
     id: string,
   ): Promise<{ success: boolean; data: User }> => {

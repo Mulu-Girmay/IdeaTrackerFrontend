@@ -341,7 +341,6 @@ const IdeaManagement = () => {
         </TableContainer>
       )}
 
-      {/* Context Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -390,7 +389,6 @@ const IdeaManagement = () => {
         </MenuItem>
       </Menu>
 
-      {/* View Idea Dialog */}
       <Dialog
         open={viewDialogOpen}
         onClose={handleCloseViewDialog}
@@ -468,7 +466,6 @@ const IdeaManagement = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

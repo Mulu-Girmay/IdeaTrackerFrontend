@@ -75,11 +75,18 @@ const UserManagement = () => {
 
   const getValidationSchema = () => {
     return Yup.object({
-      name: Yup.string().required("Name is required").min(3, "Name must be at least 3 characters"),
-      email: Yup.string().required("Email is required").email("Invalid email address"),
-      password: dialogMode === "create" 
-        ? Yup.string().required("Password is required").min(8, "Password must be at least 8 characters")
-        : Yup.string().min(8, "Password must be at least 8 characters"),
+      name: Yup.string()
+        .required("Name is required")
+        .min(3, "Name must be at least 3 characters"),
+      email: Yup.string()
+        .required("Email is required")
+        .email("Invalid email address"),
+      password:
+        dialogMode === "create"
+          ? Yup.string()
+              .required("Password is required")
+              .min(8, "Password must be at least 8 characters")
+          : Yup.string().min(8, "Password must be at least 8 characters"),
       role: Yup.string().oneOf(["user", "admin"], "Invalid role"),
     });
   };
@@ -184,9 +191,9 @@ const UserManagement = () => {
   };
 
   const filteredUsers = users.filter(
-    (user) =>
+    (user: any) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -205,9 +212,9 @@ const UserManagement = () => {
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
             User Management
           </Typography>
-          <Typography 
-            variant="body2" 
-            color="text.secondary" 
+          <Typography
+            variant="body2"
+            color="text.secondary"
             sx={{ mt: 0.5 }}
             component="p"
           >
@@ -281,10 +288,12 @@ const UserManagement = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map((user) => (
+                filteredUsers.map((user: any) => (
                   <TableRow key={user._id} hover>
                     <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
                         <Avatar sx={{ bgcolor: "primary.main" }}>
                           {user.name.charAt(0).toUpperCase()}
                         </Avatar>
@@ -330,18 +339,21 @@ const UserManagement = () => {
         </TableContainer>
       )}
 
-      {/* Context Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={() => selectedUser && handleOpenDialog("edit", selectedUser)}>
+        <MenuItem
+          onClick={() => selectedUser && handleOpenDialog("edit", selectedUser)}
+        >
           <EditIcon fontSize="small" sx={{ mr: 1 }} />
           Edit
         </MenuItem>
-        <MenuItem onClick={() => selectedUser && handleToggleUserStatus(selectedUser)}>
-          {selectedUser?.isActive ? (
+        <MenuItem
+          onClick={() => selectedUser && handleToggleUserStatus(selectedUser)}
+        >
+          {/* {selectedUser?.isActive ? (
             <>
               <BlockIcon fontSize="small" sx={{ mr: 1 }} />
               Deactivate
@@ -351,7 +363,7 @@ const UserManagement = () => {
               <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
               Activate
             </>
-          )}
+          )} */}
         </MenuItem>
         <MenuItem
           onClick={() => selectedUser && handleOpenDeleteDialog(selectedUser)}
@@ -362,8 +374,12 @@ const UserManagement = () => {
         </MenuItem>
       </Menu>
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
           {dialogMode === "create" ? "Add New User" : "Edit User"}
         </DialogTitle>
@@ -394,7 +410,11 @@ const UserManagement = () => {
             />
             <TextField
               fullWidth
-              label={dialogMode === "create" ? "Password" : "Password (leave blank to keep current)"}
+              label={
+                dialogMode === "create"
+                  ? "Password"
+                  : "Password (leave blank to keep current)"
+              }
               name="password"
               type="password"
               value={formik.values.password}
@@ -430,7 +450,6 @@ const UserManagement = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
@@ -438,7 +457,8 @@ const UserManagement = () => {
             This action cannot be undone!
           </Alert>
           <Typography>
-            Are you sure you want to delete user <strong>{selectedUser?.name}</strong>?
+            Are you sure you want to delete user{" "}
+            <strong>{selectedUser?.name}</strong>?
           </Typography>
         </DialogContent>
         <DialogActions>

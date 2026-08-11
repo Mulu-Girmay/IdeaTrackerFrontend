@@ -16,7 +16,7 @@ import {
   DialogContent,
   DialogActions,
   Alert,
-  CircularProgress,
+  Skeleton,
   MenuItem,
   TextField,
   Pagination,
@@ -41,6 +41,34 @@ import {
 import { IdeaStatus, IdeaCategory } from "../../types/idea.types";
 import type { Idea } from "../../types/idea.types";
 import EditIdeaForm from "./EditIdeaForm";
+
+const IdeaCardSkeleton = () => (
+  <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <CardContent sx={{ flex: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          mb: 2,
+          gap: 1,
+        }}
+      >
+        <Skeleton variant="text" width="60%" height={32} />
+        <Skeleton variant="rounded" width={64} height={24} />
+      </Box>
+      <Skeleton variant="text" />
+      <Skeleton variant="text" />
+      <Skeleton variant="text" width="80%" sx={{ mb: 2 }} />
+      <Skeleton variant="rounded" width={80} height={22} />
+      <Skeleton variant="text" width={120} height={18} sx={{ mt: 2 }} />
+    </CardContent>
+    <CardActions sx={{ justifyContent: "flex-end", px: 2, pb: 2 }}>
+      <Skeleton variant="circular" width={28} height={28} />
+      <Skeleton variant="circular" width={28} height={28} sx={{ ml: 1 }} />
+    </CardActions>
+  </Card>
+);
 
 const MyIdeasPage = () => {
   const dispatch = useDispatch();
@@ -211,9 +239,13 @@ const MyIdeasPage = () => {
       </Box>
 
       {isLoading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-          <CircularProgress />
-        </Box>
+        <Grid container spacing={3}>
+          {Array.from({ length: 6 }).map((_, index) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+              <IdeaCardSkeleton />
+            </Grid>
+          ))}
+        </Grid>
       ) : ideas.length === 0 ? (
         <Box
           sx={{

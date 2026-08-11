@@ -6,7 +6,7 @@ import {
   Typography,
   Card,
   CardContent,
-  CircularProgress,
+  Skeleton,
   Alert,
   IconButton,
   Tooltip,
@@ -104,14 +104,6 @@ const DashboardOverview = () => {
     },
   ];
 
-  if (isLoading && !stats) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   return (
     <Box>
       <Box
@@ -174,12 +166,23 @@ const DashboardOverview = () => {
                     >
                       {stat.title}
                     </Typography>
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 0.5 }}>
-                      {stat.value}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {stat.subtitle}
-                    </Typography>
+                    {isLoading ? (
+                      <Skeleton variant="text" width={70} height={44} />
+                    ) : (
+                      <Typography
+                        variant="h3"
+                        sx={{ fontWeight: 700, mb: 0.5 }}
+                      >
+                        {stat.value}
+                      </Typography>
+                    )}
+                    {isLoading ? (
+                      <Skeleton variant="text" width={110} height={20} />
+                    ) : (
+                      <Typography variant="caption" color="text.secondary">
+                        {stat.subtitle}
+                      </Typography>
+                    )}
                     <Box
                       sx={{
                         mt: 1,
@@ -188,13 +191,24 @@ const DashboardOverview = () => {
                         gap: 0.5,
                       }}
                     >
-                      <TrendingUpIcon
-                        sx={{ fontSize: 16, color: "success.main" }}
-                      />
+                      {!isLoading && (
+                        <TrendingUpIcon
+                          sx={{ fontSize: 16, color: "success.main" }}
+                        />
+                      )}
                     </Box>
                   </Box>
                   <StatIconWrapper color={stat.color}>
-                    {stat.icon}
+                    {isLoading ? (
+                      <Skeleton
+                        variant="circular"
+                        width={32}
+                        height={32}
+                        sx={{ bgcolor: "transparent" }}
+                      />
+                    ) : (
+                      stat.icon
+                    )}
                   </StatIconWrapper>
                 </Box>
               </CardContent>

@@ -47,6 +47,7 @@ import {
   selectIdeaManagementLoading,
   selectIdeaManagementError,
   selectIdeaManagementSuccess,
+  selectTotalIdeasCount,
 } from "./slice/ideaManagementSelector";
 import type { Idea } from "./slice/ideaManagementSlice";
 
@@ -56,8 +57,10 @@ const IdeaManagement = () => {
   const isLoading = useSelector(selectIdeaManagementLoading);
   const error = useSelector(selectIdeaManagementError);
   const success = useSelector(selectIdeaManagementSuccess);
+  const totalIdeas = useSelector(selectTotalIdeasCount);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
@@ -67,14 +70,22 @@ const IdeaManagement = () => {
   >("all");
 
   useEffect(() => {
-    if (statusFilter === "all") {
-      dispatch(fetchIdeasRequest({ page: 1, limit: 100 }));
-    } else {
-      dispatch(
-        fetchIdeasRequest({ page: 1, limit: 100, status: statusFilter }),
-      );
-    }
-  }, [dispatch, statusFilter]);
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    dispatch(
+      fetchIdeasRequest({
+        page: 1,
+        limit: 100,
+        ...(statusFilter !== "all" && { status: statusFilter }),
+        ...(debouncedSearch && { search: debouncedSearch }),
+      }),
+    );
+  }, [dispatch, statusFilter, debouncedSearch]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, idea: Idea) => {
     setAnchorEl(event.currentTarget);
@@ -126,14 +137,6 @@ const IdeaManagement = () => {
     dispatch(clearIdeaManagementMessages());
   };
 
-  const filteredIdeas = ideas.filter((idea: any) => {
-    const matchesSearch =
-      idea.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      idea.description.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesSearch;
-  });
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case "published":
@@ -145,11 +148,6 @@ const IdeaManagement = () => {
       default:
         return "default";
     }
-  };
-
-  const getStatusCount = (status: string) => {
-    if (status === "all") return ideas.length;
-    return ideas.filter((idea: any) => idea.status === status).length;
   };
 
   const getAuthorInfo = (idea: Idea) => {
@@ -205,14 +203,28 @@ const IdeaManagement = () => {
           onChange={(_, newValue) => setStatusFilter(newValue)}
           sx={{ borderBottom: 1, borderColor: "divider" }}
         >
-          <Tab label={`All (${getStatusCount("all")})`} value="all" />
           <Tab
-            label={`Published (${getStatusCount("published")})`}
+            label={statusFilter === "all" ? `All (${totalIdeas})` : "All"}
+            value="all"
+          />
+          <Tab
+            label={
+              statusFilter === "published"
+                ? `Published (${totalIdeas})`
+                : "Published"
+            }
             value="published"
           />
-          <Tab label={`Draft (${getStatusCount("draft")})`} value="draft" />
           <Tab
-            label={`Archived (${getStatusCount("archived")})`}
+            label={statusFilter === "draft" ? `Draft (${totalIdeas})` : "Draft"}
+            value="draft"
+          />
+          <Tab
+            label={
+              statusFilter === "archived"
+                ? `Archived (${totalIdeas})`
+                : "Archived"
+            }
             value="archived"
           />
         </Tabs>
@@ -254,7 +266,7 @@ const IdeaManagement = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredIdeas.length === 0 ? (
+              {ideas.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                     <Typography variant="body2" color="text.secondary">
@@ -263,7 +275,7 @@ const IdeaManagement = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredIdeas.map((idea: any) => {
+                ideas.map((idea: any) => {
                   const author = getAuthorInfo(idea);
                   return (
                     <TableRow key={idea._id} hover>
@@ -341,6 +353,7 @@ const IdeaManagement = () => {
         </TableContainer>
       )}
 
+      {/* Context Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -389,6 +402,7 @@ const IdeaManagement = () => {
         </MenuItem>
       </Menu>
 
+      {/* View Idea Dialog */}
       <Dialog
         open={viewDialogOpen}
         onClose={handleCloseViewDialog}
@@ -466,6 +480,7 @@ const IdeaManagement = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

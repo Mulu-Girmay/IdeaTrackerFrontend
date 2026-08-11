@@ -44,7 +44,6 @@ interface MenuItem {
 }
 
 const DashboardLayout = () => {
-  // Inject user dashboard module (ideas reducer and saga)
   useInjectUserDashboardModule();
   const theme = useTheme();
   const navigate = useNavigate();

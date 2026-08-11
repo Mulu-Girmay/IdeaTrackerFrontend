@@ -22,8 +22,6 @@ export const useInjectReducer = (params: {
     if (!injectedRef.current && store.reducerManager) {
       store.reducerManager.add(params.key as string, params.reducer);
       injectedRef.current = true;
-
-      console.log(` Reducer injected: ${params.key as string}`);
     }
   }, [store, params.key, params.reducer]);
 };

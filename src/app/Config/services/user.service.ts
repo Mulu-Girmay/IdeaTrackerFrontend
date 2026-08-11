@@ -1,4 +1,3 @@
-// src/Config/services/user.service.ts
 import api from "../apiRoutes";
 import type { User } from "../../types/auth.types";
 

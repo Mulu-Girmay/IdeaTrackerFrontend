@@ -36,12 +36,10 @@ function* handleLogin(action: PayloadAction<LoginCredentials>) {
       action.payload,
     );
     console.log("Login Response:", response);
-    
+
     if (response.success && response.data?.user) {
-      console.log("Login Success - User:", response.data.user);
       yield put(loginSuccess(response.data.user));
     } else {
-      console.log("Login Failed:", response.message);
       yield put(loginFailure(response.message || "Login failed"));
     }
   } catch (error: any) {
@@ -60,17 +58,14 @@ function* handleRegister(action: PayloadAction<RegisterData>) {
       authService.register,
       action.payload,
     );
-    console.log("Register Response:", response);
-    
+
     if (response.success && response.data?.user) {
-      console.log("Register Success - User:", response.data.user);
       yield put(registerSuccess(response.data.user));
     } else {
       console.log("Register Failed:", response.message);
       yield put(registerFailure(response.message || "Registration failed"));
     }
   } catch (error: any) {
-    console.error("Register Error:", error);
     yield put(
       registerFailure(
         getErrorMessage(

@@ -22,7 +22,6 @@ export const store = configureStore({
 
 store.reducerManager = reducerManager;
 
-// Expose sagaMiddleware for dynamic saga injection
 (store as any).runSaga = sagaMiddleware.run;
 
 sagaMiddleware.run(rootSaga);

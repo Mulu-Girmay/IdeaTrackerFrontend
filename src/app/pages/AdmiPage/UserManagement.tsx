@@ -63,15 +63,30 @@ const UserManagement = () => {
   const success = useSelector(selectUserManagementSuccess);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+  // Debounce the raw search input so we don't fire a request on every keystroke
   useEffect(() => {
-    dispatch(fetchUsersRequest({ page: 1, limit: 1000 }));
-  }, [dispatch]);
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    dispatch(
+      fetchUsersRequest({
+        page: 1,
+        limit: 100,
+        ...(debouncedSearch && { search: debouncedSearch }),
+      }),
+    );
+  }, [dispatch, debouncedSearch]);
 
   const getValidationSchema = () => {
     return Yup.object({
@@ -190,12 +205,6 @@ const UserManagement = () => {
     dispatch(clearUserManagementMessages());
   };
 
-  const filteredUsers = users.filter(
-    (user: any) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
   return (
     <Box>
       <Box
@@ -279,7 +288,7 @@ const UserManagement = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.length === 0 ? (
+              {users.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                     <Typography variant="body2" color="text.secondary">
@@ -288,7 +297,7 @@ const UserManagement = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map((user: any) => (
+                users.map((user: User) => (
                   <TableRow key={user._id} hover>
                     <TableCell>
                       <Box
@@ -339,6 +348,7 @@ const UserManagement = () => {
         </TableContainer>
       )}
 
+      {/* Context Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -353,7 +363,7 @@ const UserManagement = () => {
         <MenuItem
           onClick={() => selectedUser && handleToggleUserStatus(selectedUser)}
         >
-          {/* {selectedUser?.isActive ? (
+          {selectedUser?.isActive ? (
             <>
               <BlockIcon fontSize="small" sx={{ mr: 1 }} />
               Deactivate
@@ -363,7 +373,7 @@ const UserManagement = () => {
               <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
               Activate
             </>
-          )} */}
+          )}
         </MenuItem>
         <MenuItem
           onClick={() => selectedUser && handleOpenDeleteDialog(selectedUser)}
@@ -374,6 +384,7 @@ const UserManagement = () => {
         </MenuItem>
       </Menu>
 
+      {/* Create/Edit Dialog */}
       <Dialog
         open={dialogOpen}
         onClose={handleCloseDialog}
@@ -450,6 +461,7 @@ const UserManagement = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

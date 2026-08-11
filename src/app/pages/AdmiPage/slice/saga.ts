@@ -110,7 +110,7 @@ function* handleGetDashboardStats(): SagaIterator {
       return;
     }
 
-    const [usersResponse, ideasResponse, statsResponse]: [
+    const [usersResponse, ideasResponse]: [
       UsersResponse,
       IdeasResponse,
       StatsResponse,
@@ -177,7 +177,7 @@ function* handleGetDashboardStats(): SagaIterator {
 
 function* handleRefreshDashboard(): SagaIterator {
   try {
-    const [usersResponse, ideasResponse, statsResponse]: [
+    const [usersResponse, ideasResponse]: [
       UsersResponse,
       IdeasResponse,
       StatsResponse,

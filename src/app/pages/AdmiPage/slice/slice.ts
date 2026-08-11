@@ -55,7 +55,6 @@ const adminDashboardSlice = createSlice({
   name: adminDashboardSliceName,
   initialState,
   reducers: {
-    // Get Dashboard Stats
     getDashboardStatsRequest: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -75,7 +74,6 @@ const adminDashboardSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Refresh Dashboard
     refreshDashboardRequest: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -92,7 +90,6 @@ const adminDashboardSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Reset State
     resetAdminDashboardState: (state) => {
       state.isLoading = false;
       state.error = null;

@@ -62,13 +62,17 @@ const IdeaManagement = () => {
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "published" | "archived">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "draft" | "published" | "archived"
+  >("all");
 
   useEffect(() => {
     if (statusFilter === "all") {
-      dispatch(fetchIdeasRequest({ page: 1, limit: 1000 }));
+      dispatch(fetchIdeasRequest({ page: 1, limit: 100 }));
     } else {
-      dispatch(fetchIdeasRequest({ page: 1, limit: 1000, status: statusFilter }));
+      dispatch(
+        fetchIdeasRequest({ page: 1, limit: 100, status: statusFilter }),
+      );
     }
   }, [dispatch, statusFilter]);
 
@@ -103,7 +107,10 @@ const IdeaManagement = () => {
     setSelectedIdea(null);
   };
 
-  const handleChangeStatus = (idea: Idea, newStatus: "draft" | "published" | "archived") => {
+  const handleChangeStatus = (
+    idea: Idea,
+    newStatus: "draft" | "published" | "archived",
+  ) => {
     dispatch(updateIdeaStatusRequest({ id: idea._id, status: newStatus }));
     handleMenuClose();
   };
@@ -119,11 +126,11 @@ const IdeaManagement = () => {
     dispatch(clearIdeaManagementMessages());
   };
 
-  const filteredIdeas = ideas.filter((idea) => {
+  const filteredIdeas = ideas.filter((idea: any) => {
     const matchesSearch =
       idea.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       idea.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     return matchesSearch;
   });
 
@@ -142,7 +149,7 @@ const IdeaManagement = () => {
 
   const getStatusCount = (status: string) => {
     if (status === "all") return ideas.length;
-    return ideas.filter((idea) => idea.status === status).length;
+    return ideas.filter((idea: any) => idea.status === status).length;
   };
 
   const getAuthorInfo = (idea: Idea) => {
@@ -199,9 +206,15 @@ const IdeaManagement = () => {
           sx={{ borderBottom: 1, borderColor: "divider" }}
         >
           <Tab label={`All (${getStatusCount("all")})`} value="all" />
-          <Tab label={`Published (${getStatusCount("published")})`} value="published" />
+          <Tab
+            label={`Published (${getStatusCount("published")})`}
+            value="published"
+          />
           <Tab label={`Draft (${getStatusCount("draft")})`} value="draft" />
-          <Tab label={`Archived (${getStatusCount("archived")})`} value="archived" />
+          <Tab
+            label={`Archived (${getStatusCount("archived")})`}
+            value="archived"
+          />
         </Tabs>
       </Paper>
 
@@ -250,7 +263,7 @@ const IdeaManagement = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredIdeas.map((idea) => {
+                filteredIdeas.map((idea: any) => {
                   const author = getAuthorInfo(idea);
                   return (
                     <TableRow key={idea._id} hover>
@@ -272,16 +285,26 @@ const IdeaManagement = () => {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem" }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
+                          <Avatar
+                            sx={{ width: 32, height: 32, fontSize: "0.875rem" }}
+                          >
                             {author.name.charAt(0).toUpperCase()}
                           </Avatar>
                           <Box>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 500 }}
+                            >
                               {author.name}
                             </Typography>
                             {author.email && (
-                              <Typography variant="caption" color="text.secondary">
+                              <Typography
+                                variant="caption"
+                                color="text.secondary"
+                              >
                                 {author.email}
                               </Typography>
                             )}
@@ -329,19 +352,31 @@ const IdeaManagement = () => {
           View Details
         </MenuItem>
         {selectedIdea?.status !== "published" && (
-          <MenuItem onClick={() => selectedIdea && handleChangeStatus(selectedIdea, "published")}>
+          <MenuItem
+            onClick={() =>
+              selectedIdea && handleChangeStatus(selectedIdea, "published")
+            }
+          >
             <PublishIcon fontSize="small" sx={{ mr: 1 }} />
             Publish
           </MenuItem>
         )}
         {selectedIdea?.status !== "draft" && (
-          <MenuItem onClick={() => selectedIdea && handleChangeStatus(selectedIdea, "draft")}>
+          <MenuItem
+            onClick={() =>
+              selectedIdea && handleChangeStatus(selectedIdea, "draft")
+            }
+          >
             <DraftsIcon fontSize="small" sx={{ mr: 1 }} />
             Move to Draft
           </MenuItem>
         )}
         {selectedIdea?.status !== "archived" && (
-          <MenuItem onClick={() => selectedIdea && handleChangeStatus(selectedIdea, "archived")}>
+          <MenuItem
+            onClick={() =>
+              selectedIdea && handleChangeStatus(selectedIdea, "archived")
+            }
+          >
             <ArchiveIcon fontSize="small" sx={{ mr: 1 }} />
             Archive
           </MenuItem>
@@ -356,7 +391,12 @@ const IdeaManagement = () => {
       </Menu>
 
       {/* View Idea Dialog */}
-      <Dialog open={viewDialogOpen} onClose={handleCloseViewDialog} maxWidth="md" fullWidth>
+      <Dialog
+        open={viewDialogOpen}
+        onClose={handleCloseViewDialog}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>Idea Details</DialogTitle>
         <DialogContent>
           {selectedIdea && (
@@ -373,11 +413,20 @@ const IdeaManagement = () => {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 {selectedIdea.description}
               </Typography>
-              <Box sx={{ mt: 3, p: 2, bgcolor: "background.default", borderRadius: 1 }}>
+              <Box
+                sx={{
+                  mt: 3,
+                  p: 2,
+                  bgcolor: "background.default",
+                  borderRadius: 1,
+                }}
+              >
                 <Typography variant="subtitle2" gutterBottom>
                   Author Information
                 </Typography>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}
+                >
                   <Avatar>
                     {getAuthorInfo(selectedIdea).name.charAt(0).toUpperCase()}
                   </Avatar>
@@ -427,7 +476,8 @@ const IdeaManagement = () => {
             This action cannot be undone!
           </Alert>
           <Typography>
-            Are you sure you want to delete the idea <strong>{selectedIdea?.title}</strong>?
+            Are you sure you want to delete the idea{" "}
+            <strong>{selectedIdea?.title}</strong>?
           </Typography>
         </DialogContent>
         <DialogActions>

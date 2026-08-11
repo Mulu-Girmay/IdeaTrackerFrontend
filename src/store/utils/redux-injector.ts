@@ -11,7 +11,6 @@ export const useAppSelector = <T>(selector: (state: RootState) => T) =>
   useSelector<RootState, T>(selector);
 export const useAppStore = () => useStore<RootState>();
 
-// Custom implementation without redux-injectors library
 export const useInjectReducer = (params: {
   key: keyof RootState;
   reducer: Reducer;
@@ -23,8 +22,8 @@ export const useInjectReducer = (params: {
     if (!injectedRef.current && store.reducerManager) {
       store.reducerManager.add(params.key as string, params.reducer);
       injectedRef.current = true;
-      
-      console.log(`✅ Reducer injected: ${params.key as string}`);
+
+      console.log(` Reducer injected: ${params.key as string}`);
     }
   }, [store, params.key, params.reducer]);
 };
@@ -41,21 +40,17 @@ export const useInjectSaga = (params: {
   useEffect(() => {
     if (!injectedRef.current && store.runSaga && params.saga) {
       try {
-        // Run the saga and store the task
         taskRef.current = store.runSaga(params.saga);
         injectedRef.current = true;
-        
-        console.log(`✅ Saga running: ${params.key}`);
+
+        console.log(` Saga running: ${params.key}`);
       } catch (error) {
-        console.error(`❌ Failed to run saga ${params.key}:`, error);
+        console.error(` Failed to run saga ${params.key}:`, error);
       }
     }
-    
-    // Cleanup function to cancel saga if needed
+
     return () => {
       if (taskRef.current && params.mode !== "daemon") {
-        // Only cancel non-daemon sagas
-        // taskRef.current.cancel();
       }
     };
   }, [store, params.key, params.saga, params.mode]);
@@ -63,5 +58,7 @@ export const useInjectSaga = (params: {
 
 export const isReducerInjected = (key: keyof RootState): boolean => {
   const store = useStore() as StoreWithReducerManager;
-  return store.reducerManager?.getReducerMap?.()?.hasOwnProperty?.(key) ?? false;
+  return (
+    store.reducerManager?.getReducerMap?.()?.hasOwnProperty?.(key) ?? false
+  );
 };

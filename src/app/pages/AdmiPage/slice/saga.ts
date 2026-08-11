@@ -44,7 +44,6 @@ import { selectUser } from "../../authPage/slice/selector";
 import type { User } from "../../../types/auth.types";
 import type { UpdateUserData } from "../../../types/user.types";
 
-// Types for API responses
 interface UsersResponse {
   success: boolean;
   data: {
@@ -82,7 +81,6 @@ interface StatsResponse {
   };
 }
 
-// Helper function types
 interface RecentActivity {
   id: string;
   type: "user" | "idea";
@@ -103,7 +101,6 @@ interface GrowthData {
 
 function* handleGetDashboardStats(): SagaIterator {
   try {
-    // Get user to check if admin
     const user: User = yield select(selectUser);
 
     if (!user || user.role !== "admin") {
@@ -117,22 +114,24 @@ function* handleGetDashboardStats(): SagaIterator {
       UsersResponse,
       IdeasResponse,
       StatsResponse,
-    ] = yield call(Promise.all, [
-      authService.allUsers({ page: 1, limit: 1000 }),
-      ideaService.getAllIdeas({ page: 1, limit: 1000 }),
-      authService.userStats(),
-    ]);
+    ] = yield call(
+      [Promise, Promise.all],
+      [
+        authService.allUsers({ page: 1, limit: 100 }),
+        ideaService.getAllIdeas({ page: 1, limit: 100 }),
+        authService.userStats(),
+      ],
+    );
 
-    // Process users data
     const users = usersResponse.data?.users || [];
-    const totalUsers = users.length;
+    const totalUsers = usersResponse.data?.pagination?.total ?? users.length;
     const activeUsers = users.filter((u: User) => u.isActive).length;
     const inactiveUsers = totalUsers - activeUsers;
     const adminCount = users.filter((u: User) => u.role === "admin").length;
     const userCount = users.filter((u: User) => u.role === "user").length;
 
     const ideas = ideasResponse.data?.ideas || [];
-    const totalIdeas = ideas.length;
+    const totalIdeas = ideasResponse.data?.pagination?.total ?? ideas.length;
     const publishedIdeas = ideas.filter(
       (i: any) => i.status === "published",
     ).length;
@@ -182,22 +181,24 @@ function* handleRefreshDashboard(): SagaIterator {
       UsersResponse,
       IdeasResponse,
       StatsResponse,
-    ] = yield call(Promise.all, [
-      authService.allUsers({ page: 1, limit: 1000 }),
-      ideaService.getAllIdeas({ page: 1, limit: 1000 }),
-      authService.userStats(),
-    ]);
+    ] = yield call(
+      [Promise, Promise.all],
+      [
+        authService.allUsers({ page: 1, limit: 100 }),
+        ideaService.getAllIdeas({ page: 1, limit: 100 }),
+        authService.userStats(),
+      ],
+    );
 
-    // Process data
     const users = usersResponse.data?.users || [];
-    const totalUsers = users.length;
+    const totalUsers = usersResponse.data?.pagination?.total ?? users.length;
     const activeUsers = users.filter((u: User) => u.isActive).length;
     const inactiveUsers = totalUsers - activeUsers;
     const adminCount = users.filter((u: User) => u.role === "admin").length;
     const userCount = users.filter((u: User) => u.role === "user").length;
 
     const ideas = ideasResponse.data?.ideas || [];
-    const totalIdeas = ideas.length;
+    const totalIdeas = ideasResponse.data?.pagination?.total ?? ideas.length;
     const publishedIdeas = ideas.filter(
       (i: any) => i.status === "published",
     ).length;
@@ -254,14 +255,13 @@ function generateRecentActivity(users: User[], ideas: any[]): RecentActivity[] {
           name: user.name,
           email: user.email,
         },
-        timestamp: user.createdAt.toISOString(),
+        timestamp: new Date(user.createdAt).toISOString(),
         details: `User ${user.name} registered`,
       });
     }
   });
 
-  // Add idea activities
-  ideas.forEach((idea) => {
+  ideas.forEach((idea: any) => {
     if (idea.createdAt) {
       const ownerName =
         typeof idea.owner === "object" && idea.owner !== null
@@ -291,7 +291,6 @@ function generateRecentActivity(users: User[], ideas: any[]): RecentActivity[] {
     }
   });
 
-  // Sort by timestamp and get latest 10
   return activities
     .sort(
       (a, b) =>
@@ -310,7 +309,6 @@ function generateGrowthData(items: any[]): GrowthData[] {
     }
   });
 
-  // Sort dates and create cumulative data
   const sortedDates = Array.from(dateMap.keys()).sort();
   let cumulative = 0;
 
@@ -320,7 +318,6 @@ function generateGrowthData(items: any[]): GrowthData[] {
   });
 }
 
-// User Management Sagas
 function* handleFetchUsers(
   action: PayloadAction<{ page?: number; limit?: number; search?: string }>,
 ): SagaIterator {
@@ -331,9 +328,9 @@ function* handleFetchUsers(
     yield put(
       fetchUsersSuccess({
         users: response.data.users,
-        total: response.data.total,
-        page: response.data.page,
-        totalPages: response.data.totalPages,
+        total: response.data.pagination.total,
+        page: response.data.pagination.page,
+        totalPages: response.data.pagination.totalPages,
       }),
     );
   } catch (error: unknown) {
@@ -358,7 +355,6 @@ function* handleCreateUser(
       yield call(authService.register, action.payload);
 
     yield put(createUserSuccess(response.data.user));
-    // Refresh users list
     yield put(fetchUsersRequest({ page: 1, limit: 1000 }));
   } catch (error: unknown) {
     const errorMessage =
@@ -414,7 +410,6 @@ function* handleToggleUserStatus(action: PayloadAction<string>): SagaIterator {
   }
 }
 
-// Idea Management Sagas
 function* handleFetchIdeas(
   action: PayloadAction<{
     page?: number;
@@ -479,19 +474,15 @@ function* handleDeleteIdea(action: PayloadAction<string>): SagaIterator {
   }
 }
 
-// Saga watcher with proper typing
 export function* adminDashboardSaga(): SagaIterator {
   yield all([
-    // Dashboard stats
     takeLatest(getDashboardStatsRequest.type, handleGetDashboardStats),
     takeLatest(refreshDashboardRequest.type, handleRefreshDashboard),
-    // User management
     takeLatest(fetchUsersRequest.type, handleFetchUsers),
     takeLatest(createUserRequest.type, handleCreateUser),
     takeLatest(updateUserRequest.type, handleUpdateUser),
     takeLatest(deleteUserRequest.type, handleDeleteUser),
     takeLatest(toggleUserStatusRequest.type, handleToggleUserStatus),
-    // Idea management
     takeLatest(fetchIdeasRequest.type, handleFetchIdeas),
     takeLatest(updateIdeaStatusRequest.type, handleUpdateIdeaStatus),
     takeLatest(deleteIdeaRequest.type, handleDeleteIdea),

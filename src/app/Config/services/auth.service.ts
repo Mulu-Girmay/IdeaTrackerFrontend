@@ -96,11 +96,27 @@ export const authService = {
     search?: string;
   }): Promise<{
     success: boolean;
-    data: { users: User[]; total: number; page: number; totalPages: number };
+    data: {
+      users: User[];
+      pagination: {
+        page: number;
+        totalPages: number;
+        total: number;
+        limit: number;
+      };
+    };
   }> => {
     const response = await api.get<{
       success: boolean;
-      data: { users: User[]; total: number; page: number; totalPages: number };
+      data: {
+        users: User[];
+        pagination: {
+          page: number;
+          totalPages: number;
+          total: number;
+          limit: number;
+        };
+      };
     }>("/users/allUsers", { params: data });
     return response.data;
   },

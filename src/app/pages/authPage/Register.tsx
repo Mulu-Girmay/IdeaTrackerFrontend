@@ -63,10 +63,26 @@ const RegisterForm = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
 
-  // Navigate to dashboard after successful registration
+  // Navigate based on user role after successful registration
   useEffect(() => {
-    if (isAuthenticated && user) {
-      navigate("/dashboard", { replace: true });
+    console.log("Register - Auth State:", { 
+      isAuthenticated, 
+      user, 
+      role: user?.role,
+      hasUser: !!user 
+    });
+    
+    if (isAuthenticated && user && user.role) {
+      // Redirect based on user role
+      const redirectPath = user.role === "admin" ? "/dashboard/admin" : "/dashboard";
+      console.log("Redirecting to:", redirectPath);
+      
+      // Use a small timeout to ensure state has settled
+      const timer = setTimeout(() => {
+        navigate(redirectPath, { replace: true });
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
   }, [isAuthenticated, user, navigate]);
 

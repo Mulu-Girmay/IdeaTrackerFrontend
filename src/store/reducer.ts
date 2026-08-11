@@ -5,19 +5,16 @@ import type { RootState } from "./types/RootState";
 
 import authReducer from "../app/pages/authPage/slice/slice";
 import { authSliceName } from "../app/pages/authPage/slice/slice";
-import forgotPasswordReducer, {
-  forgotPasswordSliceName,
-} from "../app/pages/ForgotPasswordPage/slice/slice";
-import resetPasswordReducer, {
-  resetPasswordSliceName,
-} from "../app/pages/ResetPage/slice/slice";
-import ideaReducer, { ideaSliceName } from "../app/pages/ideaPage/slice/slice";
+import forgotPasswordReducer from "../app/pages/ForgotPasswordPage/slice/slice";
+import { forgotPasswordSliceName } from "../app/pages/ForgotPasswordPage/slice/slice";
+import resetPasswordReducer from "../app/pages/ResetPage/slice/slice";
+import { resetPasswordSliceName } from "../app/pages/ResetPage/slice/slice";
+
 
 const initialReducers: Record<string, Reducer> = {
   [authSliceName]: authReducer,
   [forgotPasswordSliceName]: forgotPasswordReducer,
   [resetPasswordSliceName]: resetPasswordReducer,
-  [ideaSliceName]: ideaReducer,
 };
 
 export function createReducerManager(

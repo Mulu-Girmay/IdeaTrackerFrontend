@@ -29,8 +29,9 @@ import {
   ChevronLeft as ChevronLeftIcon,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequest } from "../pages/authPage/slice/slice";
-import { selectUser } from "../pages/authPage/slice/selector";
+import { logoutRequest } from "../authPage/slice/slice";
+import { selectUser } from "../authPage/slice/selector";
+import { useInjectUserDashboardModule } from "../../hooks/useInjectUserDashboardModule";
 
 const DRAWER_WIDTH = 260;
 const COLLAPSED_DRAWER_WIDTH = 72;
@@ -43,6 +44,8 @@ interface MenuItem {
 }
 
 const DashboardLayout = () => {
+  // Inject user dashboard module (ideas reducer and saga)
+  useInjectUserDashboardModule();
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();

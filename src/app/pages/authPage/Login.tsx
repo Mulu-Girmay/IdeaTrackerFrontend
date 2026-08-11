@@ -35,11 +35,26 @@ const LoginPage = () => {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const from = (location.state as any)?.from?.pathname || "/dashboard";
-      navigate(from, { replace: true });
+    console.log("Login - Auth State:", { 
+      isAuthenticated, 
+      user, 
+      role: user?.role,
+      hasUser: !!user 
+    });
+    
+    if (isAuthenticated && user && user.role) {
+      // Redirect based on user role
+      const redirectPath = user.role === "admin" ? "/dashboard/admin" : "/dashboard";
+      console.log("Redirecting to:", redirectPath);
+      
+      // Use a small timeout to ensure state has settled
+      const timer = setTimeout(() => {
+        navigate(redirectPath, { replace: true });
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
-  }, [isAuthenticated, user, navigate, location]);
+  }, [isAuthenticated, user, navigate]);
 
   const formik = useFormik({
     initialValues: {

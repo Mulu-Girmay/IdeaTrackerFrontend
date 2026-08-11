@@ -8,11 +8,13 @@ export interface Idea {
   title: string;
   description: string;
   status: "draft" | "published" | "archived";
-  owner: string | {
-    _id: string;
-    name: string;
-    email: string;
-  };
+  owner:
+    | string
+    | {
+        _id: string;
+        name: string;
+        email: string;
+      };
   createdAt: string;
   updatedAt: string;
 }
@@ -41,7 +43,6 @@ const ideaManagementSlice = createSlice({
   name: ideaManagementSliceName,
   initialState,
   reducers: {
-    // Fetch All Ideas
     fetchIdeasRequest: (
       state,
       _action: PayloadAction<{
@@ -75,10 +76,12 @@ const ideaManagementSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Update Idea Status
     updateIdeaStatusRequest: (
       state,
-      _action: PayloadAction<{ id: string; status: "draft" | "published" | "archived" }>,
+      _action: PayloadAction<{
+        id: string;
+        status: "draft" | "published" | "archived";
+      }>,
     ) => {
       state.isLoading = true;
       state.error = null;
@@ -97,7 +100,6 @@ const ideaManagementSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Delete Idea
     deleteIdeaRequest: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
       state.error = null;
@@ -113,13 +115,11 @@ const ideaManagementSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Clear Messages
     clearIdeaManagementMessages: (state) => {
       state.error = null;
       state.success = null;
     },
 
-    // Reset State
     resetIdeaManagementState: () => initialState,
   },
 });
